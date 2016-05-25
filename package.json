@@ -1,0 +1,54 @@
+{
+  "name": "electron-config",
+  "version": "0.0.0",
+  "description": "Simple config handling for your Electron app or module",
+  "license": "MIT",
+  "repository": "sindresorhus/electron-config",
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com"
+  },
+  "scripts": {
+    "start": "electron test.js",
+    "test": "xo && ava"
+  },
+  "files": [
+    "index.js",
+    "config.js"
+  ],
+  "keywords": [
+    "electron",
+    "app",
+    "config",
+    "store",
+    "storage",
+    "conf",
+    "configuration",
+    "settings",
+    "preferences",
+    "json",
+    "data",
+    "persist",
+    "persistent",
+    "save"
+  ],
+  "dependencies": {
+    "dot-prop": "^3.0.0",
+    "mkdirp": "^0.5.1"
+  },
+  "devDependencies": {
+    "ava": "*",
+    "electron-prebuilt": "1.1.1",
+    "execa": "^0.4.0",
+    "tempfile": "^1.1.1",
+    "xo": "*"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  }
+}
