@@ -4,6 +4,8 @@
 
 Electron doesn't have a built-in way to persist user settings and other data. This module handles that for you, so you can focus on building your app. Config is saved in a JSON file in [`app.getPath('userData')`](http://electron.atom.io/docs/api/app/#appgetpathname).
 
+You can use this module directly in both the main and renderer process.
+
 
 ## Install
 

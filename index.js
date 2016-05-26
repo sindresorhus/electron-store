@@ -9,7 +9,8 @@ class ElectronConfig extends Config {
 			name: 'config'
 		}, opts);
 
-		opts.path = path.join(electron.app.getPath('userData'), `${opts.name}.json`);
+		const app = electron.app || electron.remote.app;
+		opts.path = path.join(app.getPath('userData'), `${opts.name}.json`);
 
 		super(opts);
 	}
