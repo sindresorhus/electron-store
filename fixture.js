@@ -3,6 +3,12 @@ const assert = require('assert');
 const electron = require('electron');
 const Config = require('./');
 
+// prevent Electron from never exiting when an exception happens
+process.on('uncaughtException', err => {
+	console.error('Exception:', err);
+	process.exit(1); // eslint-disable-line
+});
+
 const conf = new Config({name: 'electron-config'});
 
 conf.set('unicorn', '🦄');
