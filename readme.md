@@ -110,6 +110,8 @@ Get the path to the config file.
 ## Related
 
 - [electron-debug](https://github.com/sindresorhus/electron-debug) - Adds useful debug features to your Electron app
+- [electron-context-menu](https://github.com/sindresorhus/electron-context-menu) - Context menu for your Electron app
+- [electron-dl](https://github.com/sindresorhus/electron-dl) - Simplified file downloads for your Electron app
 
 
 ## License
