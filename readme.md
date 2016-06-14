@@ -1,4 +1,4 @@
-# electron-config [![Build Status: Linux and OS X](https://travis-ci.org/sindresorhus/electron-config.svg?branch=master)](https://travis-ci.org/sindresorhus/electron-config) [![Build status: Windows](https://ci.appveyor.com/api/projects/status/m2m9o6gq77xxi2eg/branch/master?svg=true)](https://ci.appveyor.com/project/sindresorhus/electron-config/branch/master)
+# electron-config [![Build Status: Linux and macOS](https://travis-ci.org/sindresorhus/electron-config.svg?branch=master)](https://travis-ci.org/sindresorhus/electron-config) [![Build status: Windows](https://ci.appveyor.com/api/projects/status/m2m9o6gq77xxi2eg/branch/master?svg=true)](https://ci.appveyor.com/project/sindresorhus/electron-config/branch/master)
 
 > Simple config handling for your [Electron](http://electron.atom.io) app or module
 
