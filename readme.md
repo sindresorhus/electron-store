@@ -18,19 +18,19 @@ $ npm install --save electron-config
 
 ```js
 const Config = require('electron-config');
-const conf = new Config();
+const config = new Config();
 
-conf.set('unicorn', '🦄');
-console.log(conf.get('unicorn'));
+config.set('unicorn', '🦄');
+console.log(config.get('unicorn'));
 //=> '🦄'
 
 // use dot-notation to access nested properties
-conf.set('foo.bar', true);
-console.log(conf.get('foo'));
+config.set('foo.bar', true);
+console.log(config.get('foo'));
 //=> {bar: true}
 
-conf.delete('unicorn');
-console.log(conf.get('unicorn'));
+config.delete('unicorn');
+console.log(config.get('unicorn'));
 //=> undefined
 ```
 
@@ -54,7 +54,7 @@ Default config.
 Type: `string`<br>
 Default: `config`
 
-Name of the config file.
+Name of the config file (without extension).
 
 This is useful if you want multiple config files for your app. Or if you're making a reusable Electron module that persists some config, in which case you should **not** use the name `config`.
 
@@ -112,6 +112,7 @@ Get the path to the config file.
 - [electron-debug](https://github.com/sindresorhus/electron-debug) - Adds useful debug features to your Electron app
 - [electron-context-menu](https://github.com/sindresorhus/electron-context-menu) - Context menu for your Electron app
 - [electron-dl](https://github.com/sindresorhus/electron-dl) - Simplified file downloads for your Electron app
+- [conf](https://github.com/sindresorhus/conf) - Simple config handling for your app or module
 
 
 ## License

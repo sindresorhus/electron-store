@@ -9,17 +9,17 @@ process.on('uncaughtException', err => {
 	process.exit(1); // eslint-disable-line
 });
 
-const conf = new Config({name: 'electron-config'});
+const config = new Config({name: 'electron-config'});
 
-conf.set('unicorn', '🦄');
-assert.equal(conf.get('unicorn'), '🦄');
+config.set('unicorn', '🦄');
+assert.equal(config.get('unicorn'), '🦄');
 
-conf.delete('unicorn');
-assert.equal(conf.get('unicorn'), undefined);
+config.delete('unicorn');
+assert.equal(config.get('unicorn'), undefined);
 
 // to be checked in AVA
-conf.set('ava', '🚀');
+config.set('ava', '🚀');
 
-console.log(conf.path);
+console.log(config.path);
 
 electron.app.quit();

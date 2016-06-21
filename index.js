@@ -1,17 +1,13 @@
 'use strict';
-const path = require('path');
 const electron = require('electron');
-const Config = require('./config');
+const Conf = require('conf');
 
-class ElectronConfig extends Config {
+class ElectronConfig extends Conf {
 	constructor(opts) {
-		opts = Object.assign({
-			name: 'config'
-		}, opts);
-
-		const app = electron.app || electron.remote.app;
-		opts.path = path.join(app.getPath('userData'), `${opts.name}.json`);
-
+		opts = Object.assign({name: 'config'}, opts);
+		opts.cwd = (electron.app || electron.remote.app).getPath('userData');
+		opts.configName = opts.name;
+		delete opts.name;
 		super(opts);
 	}
 }

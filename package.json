@@ -10,12 +10,10 @@
     "url": "sindresorhus.com"
   },
   "scripts": {
-    "start": "electron test.js",
     "test": "xo && ava"
   },
   "files": [
-    "index.js",
-    "config.js"
+    "index.js"
   ],
   "keywords": [
     "electron",
@@ -34,14 +32,12 @@
     "save"
   ],
   "dependencies": {
-    "dot-prop": "^3.0.0",
-    "mkdirp": "^0.5.1"
+    "conf": "^0.10.0"
   },
   "devDependencies": {
     "ava": "*",
     "electron-prebuilt": "1.1.1",
     "execa": "^0.4.0",
-    "tempfile": "^1.1.1",
     "xo": "*"
   },
   "xo": {
@@ -49,6 +45,9 @@
     "envs": [
       "node",
       "browser"
-    ]
+    ],
+    "rules": {
+      "import/no-extraneous-dependencies": "off"
+    }
   }
 }
