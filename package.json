@@ -32,11 +32,11 @@
     "save"
   ],
   "dependencies": {
-    "conf": "^0.10.0"
+    "conf": "^0.11.1"
   },
   "devDependencies": {
     "ava": "*",
-    "electron-prebuilt": "1.1.1",
+    "electron-prebuilt": "^1.2.6",
     "execa": "^0.4.0",
     "xo": "*"
   },
