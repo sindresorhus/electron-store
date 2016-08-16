@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "ava": "*",
-    "electron-prebuilt": "^1.2.6",
+    "electron": "^1.3.3",
     "execa": "^0.4.0",
     "xo": "*"
   },

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import test from 'ava';
 import execa from 'execa';
-import electron from 'electron-prebuilt';
+import electron from 'electron';
 
 // see https://github.com/sindresorhus/conf for more extensive tests
 
