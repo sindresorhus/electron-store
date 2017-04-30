@@ -1,6 +1,6 @@
 {
   "name": "electron-config",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "Simple config handling for your Electron app or module",
   "license": "MIT",
   "repository": "sindresorhus/electron-config",
