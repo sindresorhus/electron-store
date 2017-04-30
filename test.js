@@ -1,9 +1,9 @@
 import fs from 'fs';
+import electron from 'electron';
 import test from 'ava';
 import execa from 'execa';
-import electron from 'electron';
 
-// see https://github.com/sindresorhus/conf for more extensive tests
+// See https://github.com/sindresorhus/conf for more extensive tests
 
 test(async t => {
 	let configPath = await execa.stdout(electron, ['fixture.js'], {
@@ -15,7 +15,7 @@ test(async t => {
 		}
 	});
 
-	// stupid Windows
+	// Stupid Windows
 	configPath = configPath.trim();
 
 	t.deepEqual(JSON.parse(fs.readFileSync(configPath.trim(), 'utf8')), {ava: '🚀'});

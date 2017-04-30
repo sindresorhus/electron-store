@@ -72,9 +72,9 @@ Set an item.
 
 Set multiple items at once.
 
-#### .get(key)
+#### .get(key, [defaultValue])
 
-Get an item.
+Get an item or `defaultValue` if the item does not exist.
 
 #### .has(key)
 
