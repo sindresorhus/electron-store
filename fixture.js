@@ -1,9 +1,9 @@
 'use strict';
 const assert = require('assert');
 const electron = require('electron');
-const Config = require('./');
+const Config = require('.');
 
-// prevent Electron from never exiting when an exception happens
+// Prevent Electron from never exiting when an exception happens
 process.on('uncaughtException', err => {
 	console.error('Exception:', err);
 	process.exit(1); // eslint-disable-line
@@ -17,7 +17,7 @@ assert.equal(config.get('unicorn'), '🦄');
 config.delete('unicorn');
 assert.equal(config.get('unicorn'), undefined);
 
-// to be checked in AVA
+// To be checked in AVA
 config.set('ava', '🚀');
 
 console.log(config.path);

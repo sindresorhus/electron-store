@@ -1,7 +1,7 @@
 {
   "name": "electron-config",
   "version": "1.0.0",
-  "description": "Simple config handling for your Electron app or module",
+  "description": "Simple config handling for your Electron app or module - Persist user preferences, app state, cache, etc",
   "license": "MIT",
   "repository": "sindresorhus/electron-config",
   "author": {
@@ -41,13 +41,9 @@
     "xo": "*"
   },
   "xo": {
-    "esnext": true,
     "envs": [
       "node",
       "browser"
-    ],
-    "rules": {
-      "import/no-extraneous-dependencies": "off"
-    }
+    ]
   }
 }
