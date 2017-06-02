@@ -2,7 +2,7 @@
 const electron = require('electron');
 const Conf = require('conf');
 
-class ElectronConfig extends Conf {
+class ElectronStore extends Conf {
 	constructor(opts) {
 		opts = Object.assign({name: 'config'}, opts);
 		opts.cwd = (electron.app || electron.remote.app).getPath('userData');
@@ -12,4 +12,4 @@ class ElectronConfig extends Conf {
 	}
 }
 
-module.exports = ElectronConfig;
+module.exports = ElectronStore;

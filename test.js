@@ -6,7 +6,7 @@ import execa from 'execa';
 // See https://github.com/sindresorhus/conf for more extensive tests
 
 test(async t => {
-	let configPath = await execa.stdout(electron, ['fixture.js'], {
+	let storagePath = await execa.stdout(electron, ['fixture.js'], {
 		cwd: __dirname,
 		env: {
 			ELECTRON_ENABLE_LOGGING: true,
@@ -16,8 +16,8 @@ test(async t => {
 	});
 
 	// Stupid Windows
-	configPath = configPath.trim();
+	storagePath = storagePath.trim();
 
-	t.deepEqual(JSON.parse(fs.readFileSync(configPath.trim(), 'utf8')), {ava: '🚀'});
-	fs.unlinkSync(configPath);
+	t.deepEqual(JSON.parse(fs.readFileSync(storagePath.trim(), 'utf8')), {ava: '🚀'});
+	fs.unlinkSync(storagePath);
 });

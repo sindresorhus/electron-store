@@ -1,43 +1,45 @@
-# electron-config [![Build Status: Linux and macOS](https://travis-ci.org/sindresorhus/electron-config.svg?branch=master)](https://travis-ci.org/sindresorhus/electron-config) [![Build status: Windows](https://ci.appveyor.com/api/projects/status/m2m9o6gq77xxi2eg/branch/master?svg=true)](https://ci.appveyor.com/project/sindresorhus/electron-config/branch/master)
+# electron-store [![Build Status: Linux and macOS](https://travis-ci.org/sindresorhus/electron-store.svg?branch=master)](https://travis-ci.org/sindresorhus/electron-store) [![Build status: Windows](https://ci.appveyor.com/api/projects/status/m2m9o6gq77xxi2eg/branch/master?svg=true)](https://ci.appveyor.com/project/sindresorhus/electron-store/branch/master)
 
-> Simple data handling for your [Electron](https://electron.atom.io) app or module - Persist user preferences, app state, cache, etc
+> Simple data persistence for your [Electron](https://electron.atom.io) app or module - Save and load user preferences, app state, cache, etc
 
-Electron doesn't have a built-in way to persist user settings and other data. This module handles that for you, so you can focus on building your app. The data is saved in a JSON file in [`app.getPath('userData')`](http://electron.atom.io/docs/api/app/#appgetpathname).
+Electron doesn't have a built-in way to persist user preferences and other data. This module handles that for you, so you can focus on building your app. The data is saved in a JSON file in [`app.getPath('userData')`](http://electron.atom.io/docs/api/app/#appgetpathname).
 
 You can use this module directly in both the main and renderer process.
+
+*[This project was recently renamed from `electron-config`.](https://github.com/sindresorhus/electron-store/issues/4)*
 
 
 ## Install
 
 ```
-$ npm install --save electron-config
+$ npm install electron-store
 ```
 
 
 ## Usage
 
 ```js
-const Config = require('electron-config');
-const config = new Config();
+const Store = require('electron-store');
+const store = new Store();
 
-config.set('unicorn', '🦄');
-console.log(config.get('unicorn'));
+store.set('unicorn', '🦄');
+console.log(store.get('unicorn'));
 //=> '🦄'
 
 // use dot-notation to access nested properties
-config.set('foo.bar', true);
-console.log(config.get('foo'));
+store.set('foo.bar', true);
+console.log(store.get('foo'));
 //=> {bar: true}
 
-config.delete('unicorn');
-console.log(config.get('unicorn'));
+store.delete('unicorn');
+console.log(store.get('unicorn'));
 //=> undefined
 ```
 
 
 ## API
 
-### Config([options])
+### Store([options])
 
 Returns a new instance.
 
@@ -47,16 +49,16 @@ Returns a new instance.
 
 Type: `Object`
 
-Default config.
+Default data.
 
 #### name
 
 Type: `string`<br>
 Default: `config`
 
-Name of the config file (without extension).
+Name of the storage file (without extension).
 
-This is useful if you want multiple config files for your app. Or if you're making a reusable Electron module that persists some config, in which case you should **not** use the name `config`.
+This is useful if you want multiple storage files for your app. Or if you're making a reusable Electron module that persists some data, in which case you should **not** use the name `config`.
 
 ### Instance
 
@@ -94,7 +96,7 @@ Get the item count.
 
 #### .store
 
-Get all the config as an object or replace the current config with an object:
+Get all the data as an object or replace the current data with an object:
 
 ```js
 conf.store = {
@@ -104,7 +106,7 @@ conf.store = {
 
 #### .path
 
-Get the path to the config file.
+Get the path to the storage file.
 
 
 ## Related

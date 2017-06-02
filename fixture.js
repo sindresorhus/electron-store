@@ -1,7 +1,7 @@
 'use strict';
 const assert = require('assert');
 const electron = require('electron');
-const Config = require('.');
+const Store = require('.');
 
 // Prevent Electron from never exiting when an exception happens
 process.on('uncaughtException', err => {
@@ -9,17 +9,17 @@ process.on('uncaughtException', err => {
 	process.exit(1); // eslint-disable-line
 });
 
-const config = new Config({name: 'electron-config'});
+const store = new Store({name: 'electron-store'});
 
-config.set('unicorn', '🦄');
-assert.equal(config.get('unicorn'), '🦄');
+store.set('unicorn', '🦄');
+assert.equal(store.get('unicorn'), '🦄');
 
-config.delete('unicorn');
-assert.equal(config.get('unicorn'), undefined);
+store.delete('unicorn');
+assert.equal(store.get('unicorn'), undefined);
 
 // To be checked in AVA
-config.set('ava', '🚀');
+store.set('ava', '🚀');
 
-console.log(config.path);
+console.log(store.path);
 
 electron.app.quit();
