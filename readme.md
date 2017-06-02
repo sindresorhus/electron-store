@@ -26,7 +26,7 @@ store.set('unicorn', '🦄');
 console.log(store.get('unicorn'));
 //=> '🦄'
 
-// use dot-notation to access nested properties
+// Use dot-notation to access nested properties
 store.set('foo.bar', true);
 console.log(store.get('foo'));
 //=> {bar: true}
@@ -59,6 +59,15 @@ Default: `config`
 Name of the storage file (without extension).
 
 This is useful if you want multiple storage files for your app. Or if you're making a reusable Electron module that persists some data, in which case you should **not** use the name `config`.
+
+#### cwd
+
+Type: `string`<br>
+Default: [`app.getPath('userData')`](http://electron.atom.io/docs/api/app/#appgetpathname)
+
+Storage file location. *Don't specify this unless absolutely necessary!*
+
+If a relative path, it's relative to the default cwd. For example, `{cwd: 'unicorn'}` would result in a storage file in `~/Library/Application Support/App Name/unicorn`.
 
 ### Instance
 
