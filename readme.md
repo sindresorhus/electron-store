@@ -118,6 +118,11 @@ conf.store = {
 Get the path to the storage file.
 
 
+## FAQ
+
+- [Advantages over `window.localStorage`](https://github.com/sindresorhus/electron-store/issues/17)
+
+
 ## Related
 
 - [electron-debug](https://github.com/sindresorhus/electron-debug) - Adds useful debug features to your Electron app
