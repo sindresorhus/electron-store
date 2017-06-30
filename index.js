@@ -19,6 +19,10 @@ class ElectronStore extends Conf {
 		delete opts.name;
 		super(opts);
 	}
+
+	openInEditor() {
+		electron.shell.openItem(this.path);
+	}
 }
 
 module.exports = ElectronStore;

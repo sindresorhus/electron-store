@@ -117,6 +117,10 @@ conf.store = {
 
 Get the path to the storage file.
 
+#### .openInEditor()
+
+Open the storage file in the user's editor.
+
 
 ## FAQ
 
