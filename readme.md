@@ -71,6 +71,19 @@ Storage file location. *Don't specify this unless absolutely necessary!*
 
 If a relative path, it's relative to the default cwd. For example, `{cwd: 'unicorn'}` would result in a storage file in `~/Library/Application Support/App Name/unicorn`.
 
+#### encryptionKey
+
+Type: `string` `Buffer` `TypedArray` `DataView`<br>
+Default: `undefined`
+
+Note that this is **not intended for security purposes**, since the encryption key would be easily found inside a plain-text Electron app.
+
+Its main use is for obscurity. If a user looks through the config directory and finds the config file, since it's just a JSON file, they may be tempted to modify it. By providing an encryption key, the file will be obfuscated, which should hopefully deter any users from doing so.
+
+It also has the added bonus of ensuring the config file's integrity. If the file is changed in any way, the decryption will not work, in which case the store will just reset back to its default state.
+
+When specified, the store will be encrypted using the [`aes-256-cbc`](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) encryption algorithm.
+
 ### Instance
 
 You can use [dot-notation](https://github.com/sindresorhus/dot-prop) in a `key` to access nested properties.
@@ -100,6 +113,12 @@ Delete an item.
 #### .clear()
 
 Delete all items.
+
+#### .onDidChange(key, callback)
+
+`callback`: `(newValue, oldValue) => {}`
+
+Watches the given `key`, calling `callback` on any changes. When a key is first set `oldValue` will be `undefined`, and when a key is deleted `newValue` will be `undefined`.
 
 #### .size
 
