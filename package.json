@@ -1,6 +1,6 @@
 {
 	"name": "electron-store",
-	"version": "1.2.0",
+	"version": "1.3.0",
 	"description": "Simple data persistence for your Electron app or module - Save and load user preferences, app state, cache, etc",
 	"license": "MIT",
 	"repository": "sindresorhus/electron-store",
