@@ -94,6 +94,8 @@ The instance is [`iterable`](https://developer.mozilla.org/en/docs/Web/JavaScrip
 
 Set an item.
 
+The `value` must be JSON serializable.
+
 #### .set(object)
 
 Set multiple items at once.
