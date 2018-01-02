@@ -1,8 +1,8 @@
 # electron-store [![Build Status: Linux and macOS](https://travis-ci.org/sindresorhus/electron-store.svg?branch=master)](https://travis-ci.org/sindresorhus/electron-store) [![Build status: Windows](https://ci.appveyor.com/api/projects/status/m2m9o6gq77xxi2eg/branch/master?svg=true)](https://ci.appveyor.com/project/sindresorhus/electron-store/branch/master)
 
-> Simple data persistence for your [Electron](https://electron.atom.io) app or module - Save and load user preferences, app state, cache, etc
+> Simple data persistence for your [Electron](https://electronjs.org) app or module - Save and load user preferences, app state, cache, etc
 
-Electron doesn't have a built-in way to persist user preferences and other data. This module handles that for you, so you can focus on building your app. The data is saved in a JSON file in [`app.getPath('userData')`](http://electron.atom.io/docs/api/app/#appgetpathname).
+Electron doesn't have a built-in way to persist user preferences and other data. This module handles that for you, so you can focus on building your app. The data is saved in a JSON file in [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname).
 
 You can use this module directly in both the main and renderer process.
 
@@ -65,7 +65,7 @@ This is useful if you want multiple storage files for your app. Or if you're mak
 #### cwd
 
 Type: `string`<br>
-Default: [`app.getPath('userData')`](http://electron.atom.io/docs/api/app/#appgetpathname)
+Default: [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname)
 
 Storage file location. *Don't specify this unless absolutely necessary!*
 
