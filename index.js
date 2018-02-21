@@ -1,5 +1,6 @@
 'use strict';
 const path = require('path');
+const fs = require('fs');
 const electron = require('electron');
 const Conf = require('conf');
 
@@ -13,6 +14,14 @@ class ElectronStore extends Conf {
 			opts.cwd = path.isAbsolute(opts.cwd) ? opts.cwd : path.join(defaultCwd, opts.cwd);
 		} else {
 			opts.cwd = defaultCwd;
+		}
+
+		if (opts.validate) {
+			try {
+				JSON.parse(fs.readFileSync(opts.cwd + '\\' + opts.name + '.json'));
+			} catch (ex) {
+				throw ex;
+			}
 		}
 
 		opts.configName = opts.name;
