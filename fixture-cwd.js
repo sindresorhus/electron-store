@@ -13,9 +13,11 @@ process.on('uncaughtException', err => {
 console.log(electron.app.getPath('userData'));
 
 const store = new Store({cwd: 'foo'});
+store.set('unicorn', '🦄');
 console.log(store.path);
 
 const store2 = new Store({cwd: path.join(__dirname, 'bar')});
+store2.set('ava', '🚀');
 console.log(store2.path);
 
 electron.app.quit();
