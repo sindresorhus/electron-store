@@ -133,6 +133,8 @@ Delete all items.
 
 Watches the given `key`, calling `callback` on any changes. When a key is first set `oldValue` will be `undefined`, and when a key is deleted `newValue` will be `undefined`.
 
+Events are only triggered in the same process. So you won't get events in the main process if you trigger an event in a renderer process. See [#39](https://github.com/sindresorhus/electron-store/issues/39).
+
 #### .size
 
 Get the item count.
