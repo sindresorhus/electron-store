@@ -6,7 +6,7 @@ Electron doesn't have a built-in way to persist user preferences and other data.
 
 You can use this module directly in both the main and renderer process.
 
-*[This project was recently renamed from `electron-config`.](https://github.com/sindresorhus/electron-store/issues/4)*
+*[This project was previously known as `electron-config`.](https://github.com/sindresorhus/electron-store/issues/4)*
 
 
 ## Install
@@ -14,6 +14,8 @@ You can use this module directly in both the main and renderer process.
 ```
 $ npm install electron-store
 ```
+
+*Requires Electron 2.0.0 or later.*
 
 
 ## Usage
