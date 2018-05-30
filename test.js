@@ -32,3 +32,8 @@ test('cwd option', async t => {
 	fs.unlinkSync(storagePath);
 	fs.unlinkSync(storagePath2);
 });
+
+test('validate option', async t => {
+	const result = await run('fixture-validate.js');
+	t.is(result, 'Validation error');
+});
