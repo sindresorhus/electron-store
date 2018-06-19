@@ -17,6 +17,10 @@ $ npm install electron-store
 
 *Requires Electron 2.0.0 or later.*
 
+<a href="https://www.patreon.com/sindresorhus">
+	<img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
+</a>
+
 
 ## Usage
 
@@ -165,10 +169,13 @@ Open the storage file in the user's editor.
 
 ## Related
 
+- [electron-util](https://github.com/sindresorhus/electron-util) - Useful utilities for developing Electron apps and modules
 - [electron-debug](https://github.com/sindresorhus/electron-debug) - Adds useful debug features to your Electron app
 - [electron-context-menu](https://github.com/sindresorhus/electron-context-menu) - Context menu for your Electron app
 - [electron-dl](https://github.com/sindresorhus/electron-dl) - Simplified file downloads for your Electron app
 - [electron-unhandled](https://github.com/sindresorhus/electron-unhandled) - Catch unhandled errors and promise rejections in your Electron app
+- [electron-reloader](https://github.com/sindresorhus/electron-reloader) - Simple auto-reloading for Electron apps during development
+- [electron-serve](https://github.com/sindresorhus/electron-serve) - Static file serving for Electron apps
 - [conf](https://github.com/sindresorhus/conf) - Simple config handling for your app or module
 
 
