@@ -32,6 +32,7 @@
 		"save"
 	],
 	"dependencies": {
+		"compare-versions": "^3.4.0",
 		"conf": "^2.0.0"
 	},
 	"devDependencies": {
