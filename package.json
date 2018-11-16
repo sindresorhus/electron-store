@@ -32,7 +32,7 @@
 		"save"
 	],
 	"dependencies": {
-		"conf": "^2.0.0"
+		"conf": "^2.1.0"
 	},
 	"devDependencies": {
 		"ava": "*",
