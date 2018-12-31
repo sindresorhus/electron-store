@@ -1,5 +1,4 @@
 'use strict';
-const assert = require('assert');
 const path = require('path');
 const electron = require('electron');
 const Store = require('.');
@@ -7,7 +6,7 @@ const Store = require('.');
 // Prevent Electron from never exiting when an exception happens
 process.on('uncaughtException', err => {
 	console.error('Exception:', err);
-	process.exit(1); // eslint-disable-line
+	process.exit(1);
 });
 
 console.log(electron.app.getPath('userData'));

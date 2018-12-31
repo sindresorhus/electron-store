@@ -1,4 +1,4 @@
-# electron-store [![Build Status: Linux and macOS](https://travis-ci.org/sindresorhus/electron-store.svg?branch=master)](https://travis-ci.org/sindresorhus/electron-store) [![Build status: Windows](https://ci.appveyor.com/api/projects/status/m2m9o6gq77xxi2eg/branch/master?svg=true)](https://ci.appveyor.com/project/sindresorhus/electron-store/branch/master)
+# electron-store [![Build Status](https://travis-ci.org/sindresorhus/electron-store.svg?branch=master)](https://travis-ci.org/sindresorhus/electron-store)
 
 > Simple data persistence for your [Electron](https://electronjs.org) app or module - Save and load user preferences, app state, cache, etc
 
