@@ -35,10 +35,10 @@
 		"conf": "^2.0.0"
 	},
 	"devDependencies": {
-		"ava": "*",
-		"electron": "^2.0.2",
-		"execa": "^0.10.0",
-		"xo": "*"
+		"ava": "^1.0.1",
+		"electron": "^4.0.0",
+		"execa": "^1.0.0",
+		"xo": "^0.23.0"
 	},
 	"xo": {
 		"envs": [

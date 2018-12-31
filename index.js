@@ -4,20 +4,20 @@ const electron = require('electron');
 const Conf = require('conf');
 
 class ElectronStore extends Conf {
-	constructor(opts) {
+	constructor(options) {
 		const defaultCwd = (electron.app || electron.remote.app).getPath('userData');
 
 		opts = Object.assign({name: 'config'}, opts);
 
-		if (opts.cwd) {
-			opts.cwd = path.isAbsolute(opts.cwd) ? opts.cwd : path.join(defaultCwd, opts.cwd);
+		if (options.cwd) {
+			options.cwd = path.isAbsolute(options.cwd) ? options.cwd : path.join(defaultCwd, options.cwd);
 		} else {
-			opts.cwd = defaultCwd;
+			options.cwd = defaultCwd;
 		}
 
-		opts.configName = opts.name;
-		delete opts.name;
-		super(opts);
+		options.configName = options.name;
+		delete options.name;
+		super(options);
 	}
 
 	openInEditor() {

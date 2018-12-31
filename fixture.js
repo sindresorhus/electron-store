@@ -4,8 +4,8 @@ const electron = require('electron');
 const Store = require('.');
 
 // Prevent Electron from never exiting when an exception happens
-process.on('uncaughtException', err => {
-	console.error('Exception:', err);
+process.on('uncaughtException', error => {
+	console.error('Exception:', error);
 	process.exit(1);
 });
 
