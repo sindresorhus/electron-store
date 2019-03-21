@@ -51,6 +51,8 @@ Returns a new instance.
 
 ### options
 
+Type: `Object`
+
 #### defaults
 
 Type: `Object`
@@ -90,12 +92,37 @@ When specified, the store will be encrypted using the [`aes-256-cbc`](https://en
 
 #### fileExtension
 
-type: `string`<br>
+Type: `string`<br>
 Default: `json`
 
 Extension of the config file.
 
 You would usually not need this, but could be useful if you want to interact with a file with a custom file extension that can be associated with your app. These might be simple save/export/preference files that are intended to be shareable or saved outside of the app.
+
+#### clearInvalidConfig
+
+Type: `boolean`<br>
+Default: `true`
+
+The config is cleared if reading the config file causes a `SyntaxError`. This is a good default, as the config file is not intended to be hand-edited, so it usually means the config is corrupt and there's nothing the user can do about it anyway. However, if you let the user edit the config file directly, mistakes might happen and it could be more useful to throw an error when the config is invalid instead of clearing. Disabling this option will make it throw a `SyntaxError` on invalid config instead of clearing.
+
+#### serialize
+
+Type: `Function`<br>
+Default: `value => JSON.stringify(value, null, '\t')`
+
+Function to serialize the config object to a UTF-8 string when writing the config file.
+
+You would usually not need this, but it could be useful if you want to use a format other than JSON.
+
+#### deserialize
+
+Type: `Function`<br>
+Default: `JSON.parse`
+
+Function to deserialize the config object from a UTF-8 string when reading the config file.
+
+You would usually not need this, but it could be useful if you want to use a format other than JSON.
 
 ### Instance
 
@@ -107,7 +134,7 @@ The instance is [`iterable`](https://developer.mozilla.org/en/docs/Web/JavaScrip
 
 Set an item.
 
-The `value` must be JSON serializable.
+The `value` must be JSON serializable. Trying to set the type `undefined`, `function`, or `symbol` will result in a TypeError.
 
 #### .set(object)
 
@@ -162,7 +189,24 @@ Open the storage file in the user's editor.
 
 ## FAQ
 
-- [Advantages over `window.localStorage`](https://github.com/sindresorhus/electron-store/issues/17)
+### [Advantages over `window.localStorage`](https://github.com/sindresorhus/electron-store/issues/17)
+
+### Can I use YAML or another serialization format?
+
+The `serialize` and `deserialize` options can be used to customize the format of the config file, as long as the representation is compatible with `utf8` encoding.
+
+Example using YAML:
+
+```js
+const Store = require('electron-store');
+const yaml = require('js-yaml');
+
+const store = new Store({
+	fileExtension: 'yaml',
+	serialize: yaml.safeDump,
+	deserialize: yaml.safeLoad
+});
+```
 
 
 ## Related

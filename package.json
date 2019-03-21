@@ -32,13 +32,13 @@
 		"save"
 	],
 	"dependencies": {
-		"conf": "^2.0.0"
+		"conf": "^3.0.0"
 	},
 	"devDependencies": {
-		"ava": "^1.0.1",
-		"electron": "^4.0.0",
+		"ava": "^1.3.1",
+		"electron": "^4.1.1",
 		"execa": "^1.0.0",
-		"xo": "^0.23.0"
+		"xo": "^0.24.0"
 	},
 	"xo": {
 		"envs": [
