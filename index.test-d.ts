@@ -1,49 +1,49 @@
 import {expectType} from 'tsd';
-import ElectronStore = require('.');
+import Store = require('.');
 
-new ElectronStore({defaults: {}});
-new ElectronStore({name: 'myConfiguration'});
+new Store({defaults: {}});
+new Store({name: 'myConfiguration'});
 
-const electronStore = new ElectronStore();
+const store = new Store();
 
-electronStore.set('foo', 'bar');
-electronStore.set({
+store.set('foo', 'bar');
+store.set({
 	foo: 'bar',
 	foo2: 'bar2'
 });
-electronStore.delete('foo');
-electronStore.get('foo');
-electronStore.get('foo', 42);
-electronStore.has('foo');
-electronStore.clear();
+store.delete('foo');
+store.get('foo');
+store.get('foo', 42);
+store.has('foo');
+store.clear();
 
-electronStore.openInEditor();
+store.openInEditor();
 
-electronStore.size;
-electronStore.store;
+store.size;
+store.store;
 
-electronStore.store = {
+store.store = {
 	foo: 'bar'
 };
 
-electronStore.path;
+store.path;
 
-const typedElectronStore = new ElectronStore<number | boolean>({
+const typedStore = new Store<number | boolean>({
 	defaults: {
 		enabled: true,
 		interval: 30000
 	}
 });
 
-expectType<number | boolean>(typedElectronStore.get('interval'));
+expectType<number | boolean>(typedStore.get('interval'));
 const enabled = false;
-typedElectronStore.set('enabled', enabled);
-typedElectronStore.set({
+typedStore.set('enabled', enabled);
+typedStore.set({
 	enabled: true,
 	interval: 10000
 });
 
-const offDidChange = typedElectronStore.onDidChange(
+const offDidChange = typedStore.onDidChange(
 	'enabled',
 	(oldValue, newValue) => {
 		expectType<number | boolean | undefined>(oldValue);
