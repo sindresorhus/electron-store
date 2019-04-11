@@ -10,10 +10,11 @@
 		"url": "sindresorhus.com"
 	},
 	"scripts": {
-		"test": "xo && ava"
+		"test": "xo && ava && tsd"
 	},
 	"files": [
-		"index.js"
+		"index.js",
+		"index.d.ts"
 	],
 	"keywords": [
 		"electron",
@@ -32,12 +33,14 @@
 		"save"
 	],
 	"dependencies": {
-		"conf": "^4.0.0"
+		"conf": "^4.0.1",
+		"type-fest": "^0.3.1"
 	},
 	"devDependencies": {
 		"ava": "^1.4.1",
-		"electron": "^4.1.3",
+		"electron": "^4.1.4",
 		"execa": "^1.0.0",
+		"tsd": "^0.7.2",
 		"xo": "^0.24.0"
 	},
 	"xo": {
