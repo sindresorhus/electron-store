@@ -43,7 +43,7 @@ console.log(store.get('unicorn'));
 
 ## API
 
-Changes are written to disk atomically, so if the process crashes during a write, it will not corrupt the existing config.
+Changes are written to disk automically, so if the process crashes during a write, it will not corrupt the existing config.
 
 ### Store([options])
 
