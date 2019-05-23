@@ -15,10 +15,6 @@ $ npm install electron-store
 
 *Requires Electron 4 or later.*
 
-<a href="https://www.patreon.com/sindresorhus">
-	<img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
-</a>
-
 
 ## Usage
 
@@ -260,8 +256,3 @@ const store = new Store({
 - [electron-reloader](https://github.com/sindresorhus/electron-reloader) - Simple auto-reloading for Electron apps during development
 - [electron-serve](https://github.com/sindresorhus/electron-serve) - Static file serving for Electron apps
 - [conf](https://github.com/sindresorhus/conf) - Simple config handling for your app or module
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)
