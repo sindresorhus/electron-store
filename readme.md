@@ -161,6 +161,37 @@ Function to deserialize the config object from a UTF-8 string when reading the c
 
 You would usually not need this, but it could be useful if you want to use a format other than JSON.
 
+#### accessPropertiesByDotNotation
+
+Type: `boolean`<br>
+Default: `true`
+
+Accessing nested properties by dot notation. For example:
+
+```js
+const config = new Conf();
+config.set({
+	foo: {
+		bar: {
+			foobar: '🦄'
+		}
+	}
+});
+console.log(config.get('foo.bar.foobar'));
+//=> '🦄'
+```
+
+Alternatively, you can set this option to `false` so the whole string would be treated as one key.
+
+```js
+const config = new Conf({accessPropertiesByDotNotation: false});
+config.set({
+	`foo.bar.foobar`: '🦄'
+});
+console.log(config.get('foo.bar.foobar'));
+//=> '🦄'
+```
+
 ### Instance
 
 You can use [dot-notation](https://github.com/sindresorhus/dot-prop) in a `key` to access nested properties.
@@ -200,6 +231,12 @@ Delete all items.
 Watches the given `key`, calling `callback` on any changes. When a key is first set `oldValue` will be `undefined`, and when a key is deleted `newValue` will be `undefined`.
 
 Events are only triggered in the same process. So you won't get events in the main process if you trigger an event in a renderer process. See [#39](https://github.com/sindresorhus/electron-store/issues/39).
+
+#### .onDidAnyChange(callback)
+
+`callback`: `(newValue, oldValue) => {}`
+
+Watches the whole config object, calling `callback` on any changes. `oldValue` and `newValue` will be the config object before and after the change, respectively. You must compare `oldValue` to `newValue` to find out what changed.
 
 #### .size
 
