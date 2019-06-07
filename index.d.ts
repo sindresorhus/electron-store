@@ -19,7 +19,7 @@ declare namespace ElectronStore {
 	};
 }
 
-declare class ElectronStore<T = unknown> extends Conf<T> {
+declare class ElectronStore<T> extends Conf<T> {
 	/**
 	Simple data persistence for your [Electron](https://electronjs.org) app or module - Save and load user preferences, app state, cache, etc.
 
