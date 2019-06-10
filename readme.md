@@ -169,26 +169,28 @@ Default: `true`
 Accessing nested properties by dot notation. For example:
 
 ```js
-const config = new Conf();
-config.set({
+const Store = require('electron-store');
+
+const store = new Store();
+store.set({
 	foo: {
 		bar: {
 			foobar: '🦄'
 		}
 	}
 });
-console.log(config.get('foo.bar.foobar'));
+console.log(store.get('foo.bar.foobar'));
 //=> '🦄'
 ```
 
 Alternatively, you can set this option to `false` so the whole string would be treated as one key.
 
 ```js
-const config = new Conf({accessPropertiesByDotNotation: false});
-config.set({
+const store = new Store({accessPropertiesByDotNotation: false});
+store.set({
 	`foo.bar.foobar`: '🦄'
 });
-console.log(config.get('foo.bar.foobar'));
+console.log(store.get('foo.bar.foobar'));
 //=> '🦄'
 ```
 
