@@ -13,7 +13,7 @@ You can use this module directly in both the main and renderer process.
 $ npm install electron-store
 ```
 
-*Requires Electron 4 or later.*
+*Requires Electron 5 or later.*
 
 
 ## Usage
@@ -41,17 +41,17 @@ console.log(store.get('unicorn'));
 
 Changes are written to disk atomically, so if the process crashes during a write, it will not corrupt the existing config.
 
-### Store([options])
+### Store(options?)
 
 Returns a new instance.
 
 ### options
 
-Type: `Object`
+Type: `object`
 
 #### defaults
 
-Type: `Object`
+Type: `object`
 
 Default values for the store items.
 
@@ -59,7 +59,7 @@ Default values for the store items.
 
 #### schema
 
-type: `Object`
+type: `object`
 
 [JSON Schema](https://json-schema.org) to validate your config data.
 
@@ -116,7 +116,7 @@ If a relative path, it's relative to the default cwd. For example, `{cwd: 'unico
 
 #### encryptionKey
 
-Type: `string` `Buffer` `TypedArray` `DataView`<br>
+Type: `string | Buffer | TypedArray | DataView`<br>
 Default: `undefined`
 
 This can be used to secure sensitive data **if** the encryption key is stored in a secure manner (not plain-text) in the Node.js app. For example, by using [`node-keytar`](https://github.com/atom/node-keytar) to store the encryption key securely, or asking the encryption key from the user (a password) and then storing it in a variable.
