@@ -107,19 +107,19 @@ The `migrations` object should be consisted of a key-value pair of `version`: `h
 Example:
 
 ```js
-const store = new Conf({
-    migrations: {
-       '0.0.1': store => {
-            store.set('debug phase', true);
-       },
-       '1.0.0': store => {
-            store.delete('debug phase');
-            store.set('phase', '1.0');
-       },
-       '1.0.2': store => {
-            store.set('phase', '>1.0');
-       }
-    }
+const store = new Store({
+	migrations: {
+		'0.0.1': store => {
+			store.set('debug phase', true);
+		},
+		'1.0.0': store => {
+			store.delete('debug phase');
+			store.set('phase', '1.0');
+		},
+		'1.0.2': store => {
+			store.set('phase', '>1.0');
+		}
+	}
 });
 ```
 
