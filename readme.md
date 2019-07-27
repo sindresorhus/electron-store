@@ -100,7 +100,7 @@ store.set('foo', '1');
 
 Type: `Object`
 
-You can use migrations to perform operations to the store whenever a version is switched.
+You can use migrations to perform operations to the store whenever a version is upgraded.
 
 The `migrations` object should be consisted of a key-value pair of `version`: `handler`.
 
