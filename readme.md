@@ -98,7 +98,7 @@ store.set('foo', '1');
 
 ### migrations
 
-Type: `Object`
+Type: `object`
 
 You can use migrations to perform operations to the store whenever a version is upgraded.
 
