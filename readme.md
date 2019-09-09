@@ -108,6 +108,8 @@ The `migrations` object should consist of a key-value pair of `version`: `handle
 Example:
 
 ```js
+const Store = require('electron-store');
+
 const store = new Store({
 	migrations: {
 		'0.0.1': store => {
