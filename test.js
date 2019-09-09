@@ -7,7 +7,7 @@ import execa from 'execa';
 // See https://github.com/sindresorhus/conf for more extensive tests
 
 const run = async file => {
-	const result = await execa.stdout(electron, [file], {
+	const {stdout} = await execa(electron, [file], {
 		env: {
 			ELECTRON_ENABLE_LOGGING: true,
 			ELECTRON_ENABLE_STACK_DUMPING: true,
@@ -15,7 +15,7 @@ const run = async file => {
 		}
 	});
 
-	return result.trim();
+	return stdout.trim();
 };
 
 test('main', async t => {

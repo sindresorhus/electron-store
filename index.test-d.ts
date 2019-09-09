@@ -28,26 +28,33 @@ store.store = {
 
 store.path;
 
-const typedStore = new Store<number | boolean>({
+type Schema = Store.Schema;
+
+type TypedStore = {
+	isEnabled: boolean,
+	interval: number
+};
+
+const typedStore = new Store<TypedStore>({
 	defaults: {
-		enabled: true,
+		isEnabled: true,
 		interval: 30000
 	}
 });
 
-expectType<number | boolean>(typedStore.get('interval'));
-const enabled = false;
-typedStore.set('enabled', enabled);
+expectType<number>(typedStore.get('interval'));
+const isEnabled = false;
+typedStore.set('isEnabled', isEnabled);
 typedStore.set({
-	enabled: true,
+	isEnabled: true,
 	interval: 10000
 });
 
 const offDidChange = typedStore.onDidChange(
-	'enabled',
-	(oldValue, newValue) => {
-		expectType<number | boolean | undefined>(oldValue);
-		expectType<number | boolean | undefined>(newValue);
+	'isEnabled',
+	(newValue, oldValue) => {
+		expectType<boolean | undefined>(newValue);
+		expectType<boolean | undefined>(oldValue);
 	}
 );
 

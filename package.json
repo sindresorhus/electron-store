@@ -33,13 +33,13 @@
 		"save"
 	],
 	"dependencies": {
-		"conf": "^5.0.0",
-		"type-fest": "^0.5.2"
+		"conf": "^6.0.0",
+		"type-fest": "^0.7.1"
 	},
 	"devDependencies": {
 		"ava": "^2.1.0",
-		"electron": "^5.0.5",
-		"execa": "^1.0.0",
+		"electron": "^6.0.7",
+		"execa": "^2.0.4",
 		"tsd": "^0.7.2",
 		"xo": "^0.24.0"
 	},
