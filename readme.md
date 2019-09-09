@@ -244,6 +244,10 @@ Set multiple items at once.
 
 Get an item or `defaultValue` if the item does not exist.
 
+#### .reset(key)
+
+Reset an item to its predefined `defaultValue`.
+
 #### .has(key)
 
 Check if an item exists.
