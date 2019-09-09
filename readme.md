@@ -20,6 +20,7 @@ $ npm install electron-store
 
 ```js
 const Store = require('electron-store');
+
 const store = new Store();
 
 store.set('unicorn', '🦄');
@@ -102,7 +103,7 @@ Type: `object`
 
 You can use migrations to perform operations to the store whenever a version is upgraded.
 
-The `migrations` object should be consisted of a key-value pair of `version`: `handler`.
+The `migrations` object should consist of a key-value pair of `version`: `handler`.
 
 Example:
 
