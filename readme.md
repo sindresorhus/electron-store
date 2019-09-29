@@ -244,9 +244,9 @@ Set multiple items at once.
 
 Get an item or `defaultValue` if the item does not exist.
 
-#### .reset(key)
+#### .reset(...keys)
 
-Reset an item to its predefined `defaultValue`.
+Reset items to their default values, as defined by the `defaults` or `schema` option.
 
 #### .has(key)
 
