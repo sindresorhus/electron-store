@@ -140,7 +140,7 @@ This is useful if you want multiple storage files for your app. Or if you're mak
 Type: `string`<br>
 Default: [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname)
 
-Storage file location. *Don't specify this unless absolutely necessary!*
+Storage file location. *Don't specify this unless absolutely necessary! By default, it will pick the optimal location by adhering to system conventions. You are very likely to get this wrong and annoy users.*
 
 If a relative path, it's relative to the default cwd. For example, `{cwd: 'unicorn'}` would result in a storage file in `~/Library/Application Support/App Name/unicorn`.
 
