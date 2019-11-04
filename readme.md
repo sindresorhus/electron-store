@@ -101,9 +101,11 @@ store.set('foo', '1');
 
 Type: `object`
 
+**Don't use this feature until [this issue](https://github.com/sindresorhus/conf/issues/92) has been fixed.**
+
 You can use migrations to perform operations to the store whenever a version is upgraded.
 
-The `migrations` object should consist of a key-value pair of `version`: `handler`.
+The `migrations` object should consist of a key-value pair of `'version': handler`. The `version` can also be a [semver range](https://github.com/npm/node-semver#ranges).
 
 Example:
 
@@ -113,14 +115,17 @@ const Store = require('electron-store');
 const store = new Store({
 	migrations: {
 		'0.0.1': store => {
-			store.set('debug phase', true);
+			store.set('debugPhase', true);
 		},
 		'1.0.0': store => {
-			store.delete('debug phase');
-			store.set('phase', '1.0');
+			store.delete('debugPhase');
+			store.set('phase', '1.0.0');
 		},
 		'1.0.2': store => {
-			store.set('phase', '>1.0');
+			store.set('phase', '1.0.2');
+		},
+		'>=2.0.0': store => {
+			store.set('phase', '>=2.0.0');
 		}
 	}
 });
@@ -140,7 +145,7 @@ This is useful if you want multiple storage files for your app. Or if you're mak
 Type: `string`<br>
 Default: [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname)
 
-Storage file location. *Don't specify this unless absolutely necessary!*
+Storage file location. *Don't specify this unless absolutely necessary! By default, it will pick the optimal location by adhering to system conventions. You are very likely to get this wrong and annoy users.*
 
 If a relative path, it's relative to the default cwd. For example, `{cwd: 'unicorn'}` would result in a storage file in `~/Library/Application Support/App Name/unicorn`.
 
