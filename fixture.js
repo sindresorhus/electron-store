@@ -10,6 +10,7 @@ process.on('uncaughtException', error => {
 });
 
 const store = new Store({name: 'electron-store'});
+
 const storeWithSchema = new Store({
 	name: 'electron-store-with-schema',
 	schema: {
