@@ -6,6 +6,7 @@ const Conf = require('conf');
 class ElectronStore extends Conf {
 	constructor(options) {
 		const defaultCwd = (electron.app || electron.remote.app).getPath('userData');
+
 		options = {
 			name: 'config',
 			...options
