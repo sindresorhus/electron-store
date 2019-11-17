@@ -14,6 +14,7 @@ store.set({
 store.delete('foo');
 store.get('foo');
 store.get('foo', 42);
+store.reset('foo');
 store.has('foo');
 store.clear();
 
