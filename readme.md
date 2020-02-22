@@ -6,7 +6,6 @@ Electron doesn't have a built-in way to persist user preferences and other data.
 
 You can use this module directly in both the main and renderer process.
 
-
 ## Install
 
 ```
@@ -14,7 +13,6 @@ $ npm install electron-store
 ```
 
 *Requires Electron 5 or later.*
-
 
 ## Usage
 
@@ -36,7 +34,6 @@ store.delete('unicorn');
 console.log(store.get('unicorn'));
 //=> undefined
 ```
-
 
 ## API
 
@@ -97,11 +94,9 @@ store.set('foo', '1');
 
 **Note:** The `default` value will be overwritten by the `defaults` option if set.
 
-### migrations
+#### migrations
 
 Type: `object`
-
-**Don't use this feature until [this issue](https://github.com/sindresorhus/conf/issues/92) has been fixed.**
 
 You can use migrations to perform operations to the store whenever a version is upgraded.
 
@@ -131,10 +126,12 @@ const store = new Store({
 });
 ```
 
+> Note: The version the migrations use refers to the **project version** by default. If you want to change this behavior, specify the [`projectVersion`](#projectVersion) option.
+
 #### name
 
-Type: `string`<br>
-Default: `config`
+Type: `string`\
+Default: `'config'`
 
 Name of the storage file (without extension).
 
@@ -142,7 +139,7 @@ This is useful if you want multiple storage files for your app. Or if you're mak
 
 #### cwd
 
-Type: `string`<br>
+Type: `string`\
 Default: [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname)
 
 Storage file location. *Don't specify this unless absolutely necessary! By default, it will pick the optimal location by adhering to system conventions. You are very likely to get this wrong and annoy users.*
@@ -151,7 +148,7 @@ If a relative path, it's relative to the default cwd. For example, `{cwd: 'unico
 
 #### encryptionKey
 
-Type: `string | Buffer | TypedArray | DataView`<br>
+Type: `string | Buffer | TypedArray | DataView`\
 Default: `undefined`
 
 This can be used to secure sensitive data **if** the encryption key is stored in a secure manner (not plain-text) in the Node.js app. For example, by using [`node-keytar`](https://github.com/atom/node-keytar) to store the encryption key securely, or asking the encryption key from the user (a password) and then storing it in a variable.
@@ -164,8 +161,8 @@ When specified, the store will be encrypted using the [`aes-256-cbc`](https://en
 
 #### fileExtension
 
-Type: `string`<br>
-Default: `json`
+Type: `string`\
+Default: `'json'`
 
 Extension of the config file.
 
@@ -173,14 +170,14 @@ You would usually not need this, but could be useful if you want to interact wit
 
 #### clearInvalidConfig
 
-Type: `boolean`<br>
+Type: `boolean`\
 Default: `true`
 
 The config is cleared if reading the config file causes a `SyntaxError`. This is a good default, as the config file is not intended to be hand-edited, so it usually means the config is corrupt and there's nothing the user can do about it anyway. However, if you let the user edit the config file directly, mistakes might happen and it could be more useful to throw an error when the config is invalid instead of clearing. Disabling this option will make it throw a `SyntaxError` on invalid config instead of clearing.
 
 #### serialize
 
-Type: `Function`<br>
+Type: `Function`\
 Default: `value => JSON.stringify(value, null, '\t')`
 
 Function to serialize the config object to a UTF-8 string when writing the config file.
@@ -189,7 +186,7 @@ You would usually not need this, but it could be useful if you want to use a for
 
 #### deserialize
 
-Type: `Function`<br>
+Type: `Function`\
 Default: `JSON.parse`
 
 Function to deserialize the config object from a UTF-8 string when reading the config file.
@@ -198,7 +195,7 @@ You would usually not need this, but it could be useful if you want to use a for
 
 #### accessPropertiesByDotNotation
 
-Type: `boolean`<br>
+Type: `boolean`\
 Default: `true`
 
 Accessing nested properties by dot notation. For example:
@@ -207,6 +204,7 @@ Accessing nested properties by dot notation. For example:
 const Store = require('electron-store');
 
 const store = new Store();
+
 store.set({
 	foo: {
 		bar: {
@@ -214,6 +212,7 @@ store.set({
 		}
 	}
 });
+
 console.log(store.get('foo.bar.foobar'));
 //=> '🦄'
 ```
@@ -222,16 +221,18 @@ Alternatively, you can set this option to `false` so the whole string would be t
 
 ```js
 const store = new Store({accessPropertiesByDotNotation: false});
+
 store.set({
 	`foo.bar.foobar`: '🦄'
 });
+
 console.log(store.get('foo.bar.foobar'));
 //=> '🦄'
 ```
 
 #### watch
 
-Type: `boolean`<br>
+Type: `boolean`\
 Default: `false`
 
 Watch for any changes in the config file and call the callback for `onDidChange` if set. This is useful if there are multiple processes changing the same config file.
@@ -254,7 +255,7 @@ The `value` must be JSON serializable. Trying to set the type `undefined`, `func
 
 Set multiple items at once.
 
-#### .get(key, [defaultValue])
+#### .get(key, defaultValue?)
 
 Get an item or `defaultValue` if the item does not exist.
 
@@ -278,15 +279,35 @@ Delete all items.
 
 `callback`: `(newValue, oldValue) => {}`
 
-Watches the given `key`, calling `callback` on any changes. When a key is first set `oldValue` will be `undefined`, and when a key is deleted `newValue` will be `undefined`.
+Watches the given `key`, calling `callback` on any changes.
+
+When a key is first set `oldValue` will be `undefined`, and when a key is deleted `newValue` will be `undefined`.
 
 Events are only triggered in the same process. So you won't get events in the main process if you trigger an event in a renderer process. See [#39](https://github.com/sindresorhus/electron-store/issues/39).
+
+Returns a function which you can use to unsubscribe:
+
+```js
+const unsubscribe = store.onDidChange(key, callback);
+
+unsubscribe();
+```
 
 #### .onDidAnyChange(callback)
 
 `callback`: `(newValue, oldValue) => {}`
 
-Watches the whole config object, calling `callback` on any changes. `oldValue` and `newValue` will be the config object before and after the change, respectively. You must compare `oldValue` to `newValue` to find out what changed.
+Watches the whole config object, calling `callback` on any changes.
+
+`oldValue` and `newValue` will be the config object before and after the change, respectively. You must compare `oldValue` to `newValue` to find out what changed.
+
+Returns a function which you can use to unsubscribe:
+
+```js
+const unsubscribe = store.onDidAnyChange(key, callback);
+
+unsubscribe();
+```
 
 #### .size
 
@@ -297,7 +318,11 @@ Get the item count.
 Get all the data as an object or replace the current data with an object:
 
 ```js
-conf.store = {
+const Store = require('electron-store');
+
+const store = new Store();
+
+store.store = {
 	hello: 'world'
 };
 ```
@@ -310,12 +335,11 @@ Get the path to the storage file.
 
 Open the storage file in the user's editor.
 
-
 ## FAQ
 
-### [Advantages over `window.localStorage`](https://github.com/sindresorhus/electron-store/issues/17)
+#### [Advantages over `window.localStorage`](https://github.com/sindresorhus/electron-store/issues/17)
 
-### Can I use YAML or another serialization format?
+#### Can I use YAML or another serialization format?
 
 The `serialize` and `deserialize` options can be used to customize the format of the config file, as long as the representation is compatible with `utf8` encoding.
 
@@ -332,7 +356,6 @@ const store = new Store({
 });
 ```
 
-
 ## Related
 
 - [electron-util](https://github.com/sindresorhus/electron-util) - Useful utilities for developing Electron apps and modules
@@ -343,3 +366,4 @@ const store = new Store({
 - [electron-reloader](https://github.com/sindresorhus/electron-reloader) - Simple auto-reloading for Electron apps during development
 - [electron-serve](https://github.com/sindresorhus/electron-serve) - Static file serving for Electron apps
 - [conf](https://github.com/sindresorhus/conf) - Simple config handling for your app or module
+- [More…](https://github.com/search?q=user%3Asindresorhus+electron)
