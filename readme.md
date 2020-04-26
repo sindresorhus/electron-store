@@ -356,6 +356,21 @@ const store = new Store({
 });
 ```
 
+#### How do I get store values in the renderer process, when my store was setup in the main process?
+
+The store is not a singleton, so you will have to pass the values back and forth as messages.
+Electron provides a handy `invoke/handle` API that works well for accessing these values.
+
+```js
+ipcMain.handle('getStoreValue', (event, key) => {
+  return store.get(key);
+});
+```
+
+```js
+const foo = await ipcRenderer.invoke('getStoreValue', 'foo')
+```
+
 ## Related
 
 - [electron-util](https://github.com/sindresorhus/electron-util) - Useful utilities for developing Electron apps and modules
