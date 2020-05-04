@@ -370,7 +370,7 @@ ipcMain.handle('getStoreValue', (event, key) => {
 const foo = await ipcRenderer.invoke('getStoreValue', 'foo');
 ```
 
-It is recommended to adopt this pattern even if `electron-store` currently works directly in the renderer process as Electron plans to remove the `remote` module in the future.
+It is recommended to adopt this pattern even if `electron-store` currently works directly in the renderer process as Electron plans to remove the `remote` module in the future. An alternative is to create your own singleton, which is described in [#15](https://github.com/sindresorhus/electron-store/issues/15).
 
 ## Related
 
