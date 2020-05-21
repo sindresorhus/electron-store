@@ -24,7 +24,8 @@ class ElectronStore extends Conf {
 	}
 
 	openInEditor() {
-		electron.shell.openItem(this.path);
+		const open = electron.shell.openItem || electron.shell.openPath;
+		open(this.path);
 	}
 }
 
