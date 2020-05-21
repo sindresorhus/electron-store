@@ -2,7 +2,7 @@
 
 > Simple data persistence for your [Electron](https://electronjs.org) app or module - Save and load user preferences, app state, cache, etc
 
-Electron doesn't have a built-in way to persist user preferences and other data. This module handles that for you, so you can focus on building your app. The data is saved in a JSON file in [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname).
+Electron doesn't have a built-in way to persist user preferences and other data. This module handles that for you, so you can focus on building your app. The data is saved in a JSON file named config.json in [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname).
 
 You can use this module directly in both the main and renderer process.
 
