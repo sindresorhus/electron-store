@@ -126,7 +126,7 @@ const store = new Store({
 });
 ```
 
-> Note: The version the migrations use refers to the **project version** by default. If you want to change this behavior, specify the [`projectVersion`](#projectVersion) option.
+> Note: The version the migrations use refers to the **project version** of electron-store by default. If you want to change this behavior, specify the [`projectVersion`](#projectVersion) option.
 
 #### name
 
@@ -136,6 +136,25 @@ Default: `'config'`
 Name of the storage file (without extension).
 
 This is useful if you want multiple storage files for your app. Or if you're making a reusable Electron module that persists some data, in which case you should **not** use the name `config`.
+
+#### projectVersion
+
+Type: `string`\
+Default: The `version` field in the electron-store package.json.
+
+If you wish for this to follow your app project version instead, you will need to manually set it yourself.
+
+Example (for setting `projectVersion` to use your app version instead):
+
+```js
+const Store = require('electron-store')
+const packageData = require('path/to/package.json')
+
+const config = new Store({
+  ...,
+  projectVersion: packageData.version,
+})
+```
 
 #### cwd
 
