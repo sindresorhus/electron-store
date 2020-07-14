@@ -1,7 +1,8 @@
 'use strict';
 const path = require('path');
 const electron = require('electron');
-const Conf = require('conf');
+
+const Conf = require('conf-atomically');
 
 class ElectronStore extends Conf {
 	constructor(options) {

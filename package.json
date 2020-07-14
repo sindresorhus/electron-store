@@ -1,14 +1,14 @@
 {
-	"name": "electron-store",
-	"version": "5.2.0",
-	"description": "Simple data persistence for your Electron app or module - Save and load user preferences, app state, cache, etc",
+	"name": "electron-store-atomically",
+	"version": "0.0.1",
+	"description": "Simple data persistence for your Electron app or module - Save and load user preferences, app state, cache, etc with atomically",
 	"license": "MIT",
-	"repository": "sindresorhus/electron-store",
-	"funding": "https://github.com/sponsors/sindresorhus",
+	"repository": "jurepetrovic/electron-store-atomically",
+	"funding": "https://github.com/sponsors/jurepetrovic",
 	"author": {
-		"name": "Sindre Sorhus",
-		"email": "sindresorhus@gmail.com",
-		"url": "https://sindresorhus.com"
+		"name": "Jure Petrovic",
+		"email": "jurep2006@gmail.com",
+		"url": "https://www.enerco.si"
 	},
 	"scripts": {
 		"test": "xo && ava && tsd"
@@ -34,7 +34,7 @@
 		"save"
 	],
 	"dependencies": {
-		"conf": "^6.2.1",
+		"conf-atomically": "0.0.1",
 		"type-fest": "^0.7.1"
 	},
 	"devDependencies": {
