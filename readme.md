@@ -6,6 +6,11 @@ Electron doesn't have a built-in way to persist user preferences and other data.
 
 You can use this module directly in both the main and renderer process.
 
+## FORK
+
+This fork uses package conf-atomically to prevent EPERM errors on Windows machines.
+
+
 ## Install
 
 ```
