@@ -1,7 +1,7 @@
 /// <reference types="node"/>
 import EventEmitter = require('events');
 import {Except} from 'type-fest';
-import Conf = require('conf');
+import Conf = require('conf-atomically');
 
 declare namespace ElectronStore {
 	type Schema = Conf.Schema;

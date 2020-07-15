@@ -1,6 +1,6 @@
 {
 	"name": "electron-store-atomically",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "Simple data persistence for your Electron app or module - Save and load user preferences, app state, cache, etc with atomically",
 	"license": "MIT",
 	"repository": "jurepetrovic/electron-store-atomically",
@@ -34,7 +34,7 @@
 		"save"
 	],
 	"dependencies": {
-		"conf-atomically": "0.0.2",
+		"conf-atomically": "0.0.3",
 		"type-fest": "^0.7.1"
 	},
 	"devDependencies": {
