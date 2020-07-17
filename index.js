@@ -24,6 +24,7 @@ class ElectronStore extends Conf {
 	}
 
 	openInEditor() {
+		// TODO: Remove `electron.shell.openItem` when targeting Electron 9.`
 		const open = electron.shell.openItem || electron.shell.openPath;
 		open(this.path);
 	}

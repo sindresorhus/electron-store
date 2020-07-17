@@ -1,4 +1,4 @@
-# electron-store [![Build Status](https://travis-ci.org/sindresorhus/electron-store.svg?branch=master)](https://travis-ci.org/sindresorhus/electron-store)
+# electron-store [![Build Status](https://travis-ci.com/sindresorhus/electron-store.svg?branch=master)](https://travis-ci.com/github/sindresorhus/electron-store)
 
 > Simple data persistence for your [Electron](https://electronjs.org) app or module - Save and load user preferences, app state, cache, etc
 
@@ -12,7 +12,7 @@ You can use this module directly in both the main and renderer process.
 $ npm install electron-store
 ```
 
-*Requires Electron 5 or later.*
+*Requires Electron 7 or later.*
 
 ## Usage
 
