@@ -1,8 +1,8 @@
-import {expectType} from 'tsd';
+import {expectType, expectAssignable} from 'tsd';
 import Store = require('.');
 
-new Store({defaults: {}});
-new Store({name: 'myConfiguration'});
+new Store({defaults: {}}); // eslint-disable-line no-new
+new Store({name: 'myConfiguration'}); // eslint-disable-line no-new
 
 const store = new Store();
 
@@ -20,20 +20,20 @@ store.clear();
 
 store.openInEditor();
 
-store.size;
-store.store;
+store.size; // eslint-disable-line @typescript-eslint/no-unused-expressions
+store.store; // eslint-disable-line @typescript-eslint/no-unused-expressions
 
 store.store = {
 	foo: 'bar'
 };
 
-store.path;
+store.path; // eslint-disable-line @typescript-eslint/no-unused-expressions
 
-type Schema = Store.Schema;
+type Schema<T> = Store.Schema<T>;
 
 type TypedStore = {
-	isEnabled: boolean,
-	interval: number
+	isEnabled: boolean;
+	interval: number;
 };
 
 const typedStore = new Store<TypedStore>({
@@ -43,7 +43,9 @@ const typedStore = new Store<TypedStore>({
 	}
 });
 
+// TODO: This should not be `| undefined`.
 expectType<number>(typedStore.get('interval'));
+
 const isEnabled = false;
 typedStore.set('isEnabled', isEnabled);
 typedStore.set({
@@ -59,5 +61,5 @@ const offDidChange = typedStore.onDidChange(
 	}
 );
 
-expectType<() => void>(offDidChange);
+expectAssignable<() => void>(offDidChange);
 offDidChange();

@@ -1,15 +1,11 @@
 /// <reference types="node"/>
-import EventEmitter = require('events');
 import {Except} from 'type-fest';
-import Conf = require('conf');
+import Conf, {Schema as ConfSchema, Options as ConfOptions} from 'conf';
 
 declare namespace ElectronStore {
-	type Schema = Conf.Schema;
+	type Schema<T> = ConfSchema<T>;
 
-	type Options<T> = Except<
-		Conf.Options<T>,
-		'configName' | 'projectName' | 'projectVersion' | 'projectSuffix'
-	> & {
+	type Options<T> = Except<ConfOptions<T>, 'configName' | 'projectName' | 'projectVersion' | 'projectSuffix'> & {
 		/**
 		Name of the storage file (without extension).
 
@@ -24,7 +20,7 @@ declare namespace ElectronStore {
 /**
 Simple data persistence for your [Electron](https://electronjs.org) app or module - Save and load user preferences, app state, cache, etc.
 */
-declare class ElectronStore<T = any> extends Conf<T> {
+declare class ElectronStore<T extends Record<string, any> = Record<string, unknown>> extends Conf<T> {
 	/**
 	Changes are written to disk atomically, so if the process crashes during a write, it will not corrupt the existing store.
 
