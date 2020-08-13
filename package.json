@@ -34,7 +34,7 @@
 		"save"
 	],
 	"dependencies": {
-		"conf": "^7.1.1",
+		"conf": "^7.1.2",
 		"type-fest": "^0.16.0"
 	},
 	"devDependencies": {

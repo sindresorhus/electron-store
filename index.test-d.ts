@@ -43,8 +43,7 @@ const typedStore = new Store<TypedStore>({
 	}
 });
 
-// TODO: This should not be `| undefined`.
-expectType<number | undefined>(typedStore.get('interval'));
+expectType<number>(typedStore.get('interval'));
 
 const isEnabled = false;
 typedStore.set('isEnabled', isEnabled);
