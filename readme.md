@@ -304,7 +304,7 @@ Watches the whole config object, calling `callback` on any changes.
 Returns a function which you can use to unsubscribe:
 
 ```js
-const unsubscribe = store.onDidAnyChange(key, callback);
+const unsubscribe = store.onDidAnyChange(callback);
 
 unsubscribe();
 ```
