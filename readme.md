@@ -4,7 +4,9 @@
 
 Electron doesn't have a built-in way to persist user preferences and other data. This module handles that for you, so you can focus on building your app. The data is saved in a JSON file named config.json in [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname).
 
-You can use this module directly in both the main and renderer process. **However,** when on Electron 10 or later, you need to enable the [`enableRemoteModule`](https://www.electronjs.org/docs/api/browser-window#new-browserwindowoptions) option to be able to use it directly in the renderer process.
+You can use this module directly in both the main and renderer process.
+
+# When on Electron 10 or later, you need to enable the [`enableRemoteModule`](https://www.electronjs.org/docs/api/browser-window#new-browserwindowoptions) option to be able to use it directly in the renderer process.
 
 ## Install
 
