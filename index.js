@@ -5,7 +5,8 @@ const Conf = require('conf');
 
 class ElectronStore extends Conf {
 	constructor(options) {
-		const defaultCwd = (electron.app || electron.remote.app).getPath('userData');
+		const app = (electron.app || electron.remote.app);
+		const defaultCwd = app.getPath('userData');
 
 		options = {
 			name: 'config',
@@ -19,6 +20,7 @@ class ElectronStore extends Conf {
 		}
 
 		options.configName = options.name;
+		options.projectVersion = app.getVersion();
 		delete options.name;
 		super(options);
 	}
