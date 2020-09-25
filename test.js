@@ -32,9 +32,3 @@ test('cwd option', async t => {
 	fs.unlinkSync(storagePath);
 	fs.unlinkSync(storagePath2);
 });
-
-test('projectVersion', async t => {
-	const storagePath = await run('fixture.js');
-	t.deepEqual(JSON.parse(fs.readFileSync(storagePath, 'utf8')), {ava: '🚀'});
-	fs.unlinkSync(storagePath);
-});
