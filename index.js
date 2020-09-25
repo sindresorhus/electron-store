@@ -13,6 +13,10 @@ class ElectronStore extends Conf {
 			...options
 		};
 
+		if (!options.projectVersion) {
+			options.projectVersion = app.getVersion();
+		}
+
 		if (options.cwd) {
 			options.cwd = path.isAbsolute(options.cwd) ? options.cwd : path.join(defaultCwd, options.cwd);
 		} else {
@@ -20,7 +24,6 @@ class ElectronStore extends Conf {
 		}
 
 		options.configName = options.name;
-		options.projectVersion = app.getVersion();
 		delete options.name;
 		super(options);
 	}
