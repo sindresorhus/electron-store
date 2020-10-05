@@ -5,12 +5,17 @@ const Conf = require('conf');
 
 class ElectronStore extends Conf {
 	constructor(options) {
-		const defaultCwd = (electron.app || electron.remote.app).getPath('userData');
+		const app = (electron.app || electron.remote.app);
+		const defaultCwd = app.getPath('userData');
 
 		options = {
 			name: 'config',
 			...options
 		};
+
+		if (!options.projectVersion) {
+			options.projectVersion = app.getVersion();
+		}
 
 		if (options.cwd) {
 			options.cwd = path.isAbsolute(options.cwd) ? options.cwd : path.join(defaultCwd, options.cwd);
