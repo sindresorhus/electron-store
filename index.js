@@ -4,7 +4,7 @@ const Conf = require('conf');
 
 class ElectronStore extends Conf {
 	constructor(options) {
-		const app = (electron.app || app || electron.remote.app);
+		const app = (app || electron.app || electron.remote.app);
 		const defaultCwd = app.getPath('userData');
 
 		options = {
