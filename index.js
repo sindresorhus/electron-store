@@ -1,11 +1,10 @@
 'use strict';
 const path = require('path');
-const electron = require('electron');
 const Conf = require('conf');
 
 class ElectronStore extends Conf {
 	constructor(options) {
-		const app = (electron.app || electron.remote.app);
+		const app = (electron.app || app || electron.remote.app);
 		const defaultCwd = app.getPath('userData');
 
 		options = {
@@ -30,7 +29,8 @@ class ElectronStore extends Conf {
 
 	openInEditor() {
 		// TODO: Remove `electron.shell.openItem` when targeting Electron 9.`
-		const open = electron.shell.openItem || electron.shell.openPath;
+		const shell = shell
+		const open = (shell.openItem || shell.openPath) || (electron.shell.openItem || electron.shell.openPath);
 		open(this.path);
 	}
 }
