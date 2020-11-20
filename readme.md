@@ -237,9 +237,7 @@ console.log(store.get('foo.bar.foobar'));
 Type: `boolean`\
 Default: `false`
 
-Watch for any changes in the config file and call the callback for `onDidChange` if set. This is useful if there are multiple processes changing the same config file.
-
-**Currently this option doesn't work on Node.js 8 on macOS.**
+Watch for any changes in the config file and call the callback for `onDidChange` or `onDidAnyChange` if set. This is useful if there are multiple processes changing the same config file, for example, if you want changes done in the main process to be reflected in a renderer process.
 
 ### Instance
 
@@ -284,8 +282,6 @@ Delete all items.
 Watches the given `key`, calling `callback` on any changes.
 
 When a key is first set `oldValue` will be `undefined`, and when a key is deleted `newValue` will be `undefined`.
-
-Events are only triggered in the same process. So you won't get events in the main process if you trigger an event in a renderer process. See [#39](https://github.com/sindresorhus/electron-store/issues/39).
 
 Returns a function which you can use to unsubscribe:
 
