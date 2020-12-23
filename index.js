@@ -1,30 +1,47 @@
 'use strict';
 const path = require('path');
 const electron = require('electron');
+const {app, ipcMain, ipcRenderer} = electron;
 const Conf = require('conf');
 
 class ElectronStore extends Conf {
 	constructor(options) {
-		const app = (electron.app || electron.remote.app);
-		const defaultCwd = app.getPath('userData');
+		let defaultCwd;
+		let appVersion;
 
-		options = {
-			name: 'config',
-			...options
-		};
+		(async () => {
+			// If we are in the renderer prrocess, we communicate with the main process
+			// to get the required data for the module
+			// otherwise, we pull from the main process
+			if (ipcRenderer) {
+				await ipcRenderer.invoke('electron-store-comms').then(result => {
+					defaultCwd = result.defaultCwd;
+					appVersion = result.appVersion;
+				}).catch(() => console.error('Electron Store: you need to call init() from the Main process first.'));
+			} else {
+				defaultCwd = app.getPath('userData');
+				appVersion = app.getVersion();
+			}
 
-		if (!options.projectVersion) {
-			options.projectVersion = app.getVersion();
-		}
+			options = {
+				name: 'config',
+				...options
+			};
 
-		if (options.cwd) {
-			options.cwd = path.isAbsolute(options.cwd) ? options.cwd : path.join(defaultCwd, options.cwd);
-		} else {
-			options.cwd = defaultCwd;
-		}
+			if (!options.projectVersion) {
+				options.projectVersion = appVersion;
+			}
 
-		options.configName = options.name;
-		delete options.name;
+			if (options.cwd) {
+				options.cwd = path.isAbsolute(options.cwd) ? options.cwd : path.join(defaultCwd, options.cwd);
+			} else {
+				options.cwd = defaultCwd;
+			}
+
+			options.configName = options.name;
+			delete options.name;
+		})();
+
 		super(options);
 	}
 
@@ -35,4 +52,18 @@ class ElectronStore extends Conf {
 	}
 }
 
-module.exports = ElectronStore;
+// Initializier to set up the ipcMain handler for communication between renderer and main prrocess
+const init = () => {
+	if (!ipcMain || !app) {
+		throw new Error('Electron Store: you need to call init() from the Main process.');
+	}
+
+	ipcMain.handle('electron-store-comms', () => {
+		return {
+			defaultCwd: app.getVersion(),
+			appVersion: app.getPath('userData')
+		};
+	});
+};
+
+module.exports = {Store: ElectronStore, StoreInit: init};
