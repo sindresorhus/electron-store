@@ -10,7 +10,7 @@ class ElectronStore extends Conf {
 		let appVersion;
 
 		(async () => {
-			// If we are in the renderer prrocess, we communicate with the main process
+			// If we are in the renderer process, we communicate with the main process
 			// to get the required data for the module
 			// otherwise, we pull from the main process
 			if (ipcRenderer) {
