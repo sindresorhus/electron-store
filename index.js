@@ -18,7 +18,15 @@ class ElectronStore extends Conf {
 					defaultCwd = result.defaultCwd;
 					appVersion = result.appVersion;
 				}).catch(() => console.error('Electron Store: you need to call init() from the Main process first.'));
-			} else {
+			} else if (ipcMain && app) {
+				// Set up the ipcMain handler for communication between renderer and main prrocess
+				ipcMain.handle('electron-store-comms', () => {
+					return {
+						defaultCwd: app.getVersion(),
+						appVersion: app.getPath('userData')
+					};
+				});
+
 				defaultCwd = app.getPath('userData');
 				appVersion = app.getVersion();
 			}
