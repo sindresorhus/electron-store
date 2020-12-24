@@ -45,6 +45,20 @@ class ElectronStore extends Conf {
 		super(options);
 	}
 
+	// Initializier to set up the ipcMain handler for communication between renderer and main prrocess
+	static init() {
+		if (!ipcMain || !app) {
+			throw new Error('Electron Store: you need to call init() from the Main process.');
+		}
+	
+		ipcMain.handle('electron-store-comms', () => {
+			return {
+				defaultCwd: app.getVersion(),
+				appVersion: app.getPath('userData')
+			};
+		});
+	}
+
 	openInEditor() {
 		// TODO: Remove `electron.shell.openItem` when targeting Electron 9.`
 		const open = electron.shell.openItem || electron.shell.openPath;
@@ -52,18 +66,4 @@ class ElectronStore extends Conf {
 	}
 }
 
-// Initializier to set up the ipcMain handler for communication between renderer and main prrocess
-const init = () => {
-	if (!ipcMain || !app) {
-		throw new Error('Electron Store: you need to call init() from the Main process.');
-	}
-
-	ipcMain.handle('electron-store-comms', () => {
-		return {
-			defaultCwd: app.getVersion(),
-			appVersion: app.getPath('userData')
-		};
-	});
-};
-
-module.exports = {Store: ElectronStore, StoreInit: init};
+module.exports = ElectronStore;
