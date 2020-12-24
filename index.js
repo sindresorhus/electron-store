@@ -50,7 +50,7 @@ class ElectronStore extends Conf {
 		if (!ipcMain || !app) {
 			throw new Error('Electron Store: you need to call init() from the Main process.');
 		}
-	
+
 		ipcMain.handle('electron-store-comms', () => {
 			return {
 				defaultCwd: app.getVersion(),
