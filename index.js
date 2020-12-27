@@ -9,58 +9,57 @@ class ElectronStore extends Conf {
 		let defaultCwd;
 		let appVersion;
 
-		(async () => {
-			// If we are in the renderer process, we communicate with the main process
-			// to get the required data for the module
-			// otherwise, we pull from the main process
-			if (ipcRenderer) {
-				await ipcRenderer.invoke('electron-store-comms').then(result => {
-					defaultCwd = result.defaultCwd;
-					appVersion = result.appVersion;
-				}).catch(() => console.error('Electron Store: you need to call init() from the Main process first.'));
-			} else if (ipcMain && app) {
-				// Set up the ipcMain handler for communication between renderer and main prrocess
-				ipcMain.handle('electron-store-comms', () => {
-					return {
-						defaultCwd: app.getVersion(),
-						appVersion: app.getPath('userData')
-					};
-				});
+		// If we are in the renderer process, we communicate with the main process
+		// to get the required data for the module
+		// otherwise, we pull from the main process
+		if (ipcRenderer) {
+			const appData = ipcRenderer.sendSync('electron-store-comms');
 
-				defaultCwd = app.getPath('userData');
-				appVersion = app.getVersion();
-			}
+			defaultCwd = appData.defaultCwd;
+			appVersion = appData.appVersion;
+		} else if (ipcMain && app) {
+			// Set up the ipcMain handler for communication between renderer and main prrocess
+			ipcMain.on('electron-store-comms', event => {
+				event.returnValue = {
+					defaultCwd: app.getVersion(),
+					appVersion: app.getPath('userData')
+				};
+			});
 
-			options = {
-				name: 'config',
-				...options
-			};
+			defaultCwd = app.getPath('userData');
+			appVersion = app.getVersion();
+		}
 
-			if (!options.projectVersion) {
-				options.projectVersion = appVersion;
-			}
+		options = {
+			name: 'config',
+			...options
+		};
 
-			if (options.cwd) {
-				options.cwd = path.isAbsolute(options.cwd) ? options.cwd : path.join(defaultCwd, options.cwd);
-			} else {
-				options.cwd = defaultCwd;
-			}
+		if (!options.projectVersion) {
+			options.projectVersion = appVersion;
+		}
 
-			options.configName = options.name;
-			delete options.name;
-		})();
+		if (options.cwd) {
+			options.cwd = path.isAbsolute(options.cwd) ? options.cwd : path.join(defaultCwd, options.cwd);
+		} else {
+			options.cwd = defaultCwd;
+		}
+
+		options.configName = options.name;
+		delete options.name;
 
 		super(options);
 	}
 
 	// Initializier to set up the ipcMain handler for communication between renderer and main prrocess
-	static init() {
+	// When the user does not create a new Store in the main process
+	static initRenderer() {
 		if (!ipcMain || !app) {
-			throw new Error('Electron Store: you need to call init() from the Main process.');
+			throw new Error('Electron Store: you need to call initRenderer() from the Main process.');
 		}
 
-		ipcMain.handle('electron-store-comms', () => {
-			return {
+		ipcMain.on('electron-store-comms', event => {
+			event.returnValue = {
 				defaultCwd: app.getVersion(),
 				appVersion: app.getPath('userData')
 			};
