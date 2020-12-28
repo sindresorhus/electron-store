@@ -21,8 +21,8 @@ class ElectronStore extends Conf {
 			// Set up the ipcMain handler for communication between renderer and main prrocess
 			ipcMain.on('electron-store-comms', event => {
 				event.returnValue = {
-					defaultCwd: app.getVersion(),
-					appVersion: app.getPath('userData')
+					defaultCwd: app.getPath('userData'),
+					appVersion: app.getVersion()
 				};
 			});
 
@@ -60,8 +60,8 @@ class ElectronStore extends Conf {
 
 		ipcMain.on('electron-store-comms', event => {
 			event.returnValue = {
-				defaultCwd: app.getVersion(),
-				appVersion: app.getPath('userData')
+				defaultCwd: app.getPath('userData'),
+				appVersion: app.getVersion()
 			};
 		});
 	}
