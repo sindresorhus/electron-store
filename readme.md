@@ -1,4 +1,4 @@
-# electron-store [![Build Status](https://travis-ci.com/sindresorhus/electron-store.svg?branch=master)](https://travis-ci.com/github/sindresorhus/electron-store)
+# electron-store
 
 > Simple data persistence for your [Electron](https://electronjs.org) app or module - Save and load user preferences, app state, cache, etc
 
