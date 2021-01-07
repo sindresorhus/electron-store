@@ -263,6 +263,8 @@ Get an item or `defaultValue` if the item does not exist.
 
 Reset items to their default values, as defined by the `defaults` or `schema` option.
 
+Use `.clear()` to reset all items.
+
 #### .has(key)
 
 Check if an item exists.
@@ -274,6 +276,8 @@ Delete an item.
 #### .clear()
 
 Delete all items.
+
+This resets known items to their default values, if defined by the `defaults` or `schema` option.
 
 #### .onDidChange(key, callback)
 
