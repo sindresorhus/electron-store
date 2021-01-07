@@ -11,8 +11,8 @@ const initComms = () => {
 	}
 
 	const appData = {
-		defaultCwd: app.getVersion(),
-		appVersion: app.getPath('userData')
+		defaultCwd: app.getPath('userData'),
+		appVersion: app.getVersion()
 	};
 
 	// Set up the ipcMain handler for communication between renderer and main prrocess
