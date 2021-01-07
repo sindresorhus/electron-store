@@ -4,6 +4,25 @@ const electron = require('electron');
 const {app, ipcMain, ipcRenderer} = electron;
 const Conf = require('conf');
 
+// Set up the ipcMain handler for communication between renderer and main prrocess
+const initComms = () => {
+	if (!ipcMain || !app) {
+		throw new Error('Electron Store: you need to call initRenderer() from the Main process.');
+	}
+
+	const appData = {
+		defaultCwd: app.getVersion(),
+		appVersion: app.getPath('userData')
+	};
+
+	// Set up the ipcMain handler for communication between renderer and main prrocess
+	ipcMain.on('electron-store-comms', event => {
+		event.returnValue = appData;
+	});
+
+	return appData;
+};
+
 class ElectronStore extends Conf {
 	constructor(options) {
 		let defaultCwd;
@@ -13,21 +32,9 @@ class ElectronStore extends Conf {
 		// to get the required data for the module
 		// otherwise, we pull from the main process
 		if (ipcRenderer) {
-			const appData = ipcRenderer.sendSync('electron-store-comms');
-
-			defaultCwd = appData.defaultCwd;
-			appVersion = appData.appVersion;
+			({defaultCwd, appVersion} = ipcRenderer.sendSync('electron-store-comms'));
 		} else if (ipcMain && app) {
-			// Set up the ipcMain handler for communication between renderer and main prrocess
-			ipcMain.on('electron-store-comms', event => {
-				event.returnValue = {
-					defaultCwd: app.getVersion(),
-					appVersion: app.getPath('userData')
-				};
-			});
-
-			defaultCwd = app.getPath('userData');
-			appVersion = app.getVersion();
+			({defaultCwd, appVersion} = initComms());
 		}
 
 		options = {
@@ -51,19 +58,10 @@ class ElectronStore extends Conf {
 		super(options);
 	}
 
-	// Initializier to set up the ipcMain handler for communication between renderer and main prrocess
+	// Initializier that calls initComms() to set-up the required ipcMain listener
 	// When the user does not create a new Store in the main process
 	static initRenderer() {
-		if (!ipcMain || !app) {
-			throw new Error('Electron Store: you need to call initRenderer() from the Main process.');
-		}
-
-		ipcMain.on('electron-store-comms', event => {
-			event.returnValue = {
-				defaultCwd: app.getVersion(),
-				appVersion: app.getPath('userData')
-			};
-		});
+		return initComms();
 	}
 
 	openInEditor() {
