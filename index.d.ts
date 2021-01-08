@@ -59,10 +59,9 @@ declare class ElectronStore<T extends Record<string, any> = Record<string, unkno
 	openInEditor(): void;
 
 	/**
-	Initializier that sets up the required ipcMain listener
-	when the user does not create a new Store in the main process
+	Initializier that sets up the required ipcMain listener when the user does not create a new Store in the main process.
 	*/
-	ipcRenderer(): void;
+	initRenderer(): void;
 }
 
 export = ElectronStore;
