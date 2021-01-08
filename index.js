@@ -4,8 +4,8 @@ const electron = require('electron');
 const {app, ipcMain, ipcRenderer} = electron;
 const Conf = require('conf');
 
-// Set up the ipcMain handler for communication between renderer and main prrocess
-const initComms = () => {
+// Set up the ipcMain handler for communication between renderer and main process
+const initDataListener = () => {
 	if (!ipcMain || !app) {
 		throw new Error('Electron Store: you need to call initRenderer() from the Main process.');
 	}
@@ -15,8 +15,8 @@ const initComms = () => {
 		appVersion: app.getVersion()
 	};
 
-	// Set up the ipcMain handler for communication between renderer and main prrocess
-	ipcMain.on('electron-store-comms', event => {
+	// Set up the ipcMain handler for communication between renderer and main process
+	ipcMain.on('electron-store-get-data', event => {
 		event.returnValue = appData;
 	});
 
@@ -32,9 +32,9 @@ class ElectronStore extends Conf {
 		// to get the required data for the module
 		// otherwise, we pull from the main process
 		if (ipcRenderer) {
-			({defaultCwd, appVersion} = ipcRenderer.sendSync('electron-store-comms'));
+			({defaultCwd, appVersion} = ipcRenderer.sendSync('electron-store-get-data'));
 		} else if (ipcMain && app) {
-			({defaultCwd, appVersion} = initComms());
+			({defaultCwd, appVersion} = initDataListener());
 		}
 
 		options = {
@@ -58,10 +58,10 @@ class ElectronStore extends Conf {
 		super(options);
 	}
 
-	// Initializier that calls initComms() to set-up the required ipcMain listener
+	// Initializier that calls initDataListener() to set-up the required ipcMain listener
 	// When the user does not create a new Store in the main process
 	static initRenderer() {
-		return initComms();
+		initDataListener();
 	}
 
 	openInEditor() {
