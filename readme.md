@@ -333,7 +333,7 @@ Open the storage file in the user's editor.
 
 ### initRenderer()
 
-Initializier to set-up the required `ipc` communication channels for the module when a `Store` instance is not created in the main process. Use this if you are using a `Store` instance in the Electron renderer prrocess only.
+Initializer to set up the required `ipc` communication channels for the module when a `Store` instance is not created in the main process and you are creating a `Store` instance in the Electron renderer process only.
 
 In the main process:
 
@@ -344,8 +344,11 @@ Store.initRenderer();
 ```
 
 And in the renderer process:
+
 ```js
 const Store = require('electron-store');
+
+const store = new Store();
 
 store.set('unicorn', '🦄');
 console.log(store.get('unicorn'));

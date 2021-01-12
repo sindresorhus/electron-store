@@ -58,8 +58,9 @@ class ElectronStore extends Conf {
 		super(options);
 	}
 
-	// Initializier that calls initDataListener() to set-up the required ipcMain listener
-	// When the user does not create a new Store in the main process
+	// Initializer to set up the required ipc communication channels for the module
+	// When a Store instance is not created in the main process
+	// And a Store instance is created in the Electron renderer process only.
 	static initRenderer() {
 		initDataListener();
 	}

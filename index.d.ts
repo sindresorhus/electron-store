@@ -59,7 +59,7 @@ declare class ElectronStore<T extends Record<string, any> = Record<string, unkno
 	openInEditor(): void;
 
 	/**
-	Initializier that sets up the required ipcMain listener when the user does not create a new Store in the main process.
+	Initializer to set up the required `ipc` communication channels for the module when a `Store` instance is not created in the main process and you are creating a `Store` instance in the Electron renderer process only.
 	*/
 	initRenderer(): void;
 }
