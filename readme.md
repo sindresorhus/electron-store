@@ -128,8 +128,6 @@ const store = new Store({
 });
 ```
 
-> Note: The version the migrations use refers to the **project version** by default. If you want to change this behavior, specify the [`projectVersion`](#projectVersion) option.
-
 #### name
 
 Type: `string`\
