@@ -4,7 +4,7 @@
 
 Electron doesn't have a built-in way to persist user preferences and other data. This module handles that for you, so you can focus on building your app. The data is saved in a JSON file named config.json in [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname).
 
-You can use this module directly in both the main and renderer process. For use in the renderer process only, you need to call `Store.initRenderer()` in the main process, or create a new Store instance (`new Store()`) in the main process. 
+You can use this module directly in both the main and renderer process. For use in the renderer process only, you need to call `Store.initRenderer()` in the main process, or create a new Store instance (`new Store()`) in the main process.
 
 ## Install
 
@@ -12,7 +12,7 @@ You can use this module directly in both the main and renderer process. For use 
 $ npm install electron-store
 ```
 
-*Requires Electron 7 or later.*
+*Requires Electron 11 or later.*
 
 ## Usage
 

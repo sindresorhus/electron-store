@@ -1,9 +1,7 @@
 'use strict';
 const path = require('path');
-const electron = require('electron');
+const {app, ipcMain, ipcRenderer, shell} = require('electron');
 const Conf = require('conf');
-
-const {app, ipcMain, ipcRenderer} = electron;
 
 // Set up the `ipcMain` handler for communication between renderer and main process.
 const initDataListener = () => {
@@ -62,9 +60,7 @@ class ElectronStore extends Conf {
 	}
 
 	openInEditor() {
-		// TODO: Remove `electron.shell.openItem` when targeting Electron 9.`
-		const open = electron.shell.openItem || electron.shell.openPath;
-		open(this.path);
+		shell.openPath(this.path);
 	}
 }
 
