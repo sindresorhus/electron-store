@@ -34,15 +34,15 @@
 		"save"
 	],
 	"dependencies": {
-		"conf": "^7.1.2",
-		"type-fest": "^0.16.0"
+		"conf": "^8.0.0",
+		"type-fest": "^0.20.2"
 	},
 	"devDependencies": {
-		"ava": "^2.1.0",
+		"ava": "^2.4.0",
 		"electron": "^11.2.0",
-		"execa": "^4.0.3",
-		"tsd": "^0.13.1",
-		"xo": "^0.32.1"
+		"execa": "^5.0.0",
+		"tsd": "^0.14.0",
+		"xo": "^0.37.1"
 	},
 	"xo": {
 		"envs": [
