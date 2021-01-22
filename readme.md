@@ -4,9 +4,7 @@
 
 Electron doesn't have a built-in way to persist user preferences and other data. This module handles that for you, so you can focus on building your app. The data is saved in a JSON file named config.json in [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname).
 
-You can use this module directly in both the main and renderer process.
-
-# When on Electron 10 or later, you need to enable the [`enableRemoteModule`](https://www.electronjs.org/docs/api/browser-window#new-browserwindowoptions) option to be able to use it directly in the renderer process.
+You can use this module directly in both the main and renderer process. For use in the renderer process only, you need to call `Store.initRenderer()` in the main process, or create a new Store instance (`new Store()`) in the main process. 
 
 ## Install
 
@@ -334,6 +332,30 @@ Get the path to the storage file.
 #### .openInEditor()
 
 Open the storage file in the user's editor.
+
+### initRenderer()
+
+Initializer to set up the required `ipc` communication channels for the module when a `Store` instance is not created in the main process and you are creating a `Store` instance in the Electron renderer process only.
+
+In the main process:
+
+```js
+const Store = require('electron-store');
+
+Store.initRenderer();
+```
+
+And in the renderer process:
+
+```js
+const Store = require('electron-store');
+
+const store = new Store();
+
+store.set('unicorn', '🦄');
+console.log(store.get('unicorn'));
+//=> '🦄'
+```
 
 ## FAQ
 

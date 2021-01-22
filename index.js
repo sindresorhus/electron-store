@@ -3,10 +3,38 @@ const path = require('path');
 const electron = require('electron');
 const Conf = require('conf');
 
+const {app, ipcMain, ipcRenderer} = electron;
+
+// Set up the `ipcMain` handler for communication between renderer and main process.
+const initDataListener = () => {
+	if (!ipcMain || !app) {
+		throw new Error('Electron Store: You need to call `.initRenderer()` from the main process.');
+	}
+
+	const appData = {
+		defaultCwd: app.getPath('userData'),
+		appVersion: app.getVersion()
+	};
+
+	ipcMain.on('electron-store-get-data', event => {
+		event.returnValue = appData;
+	});
+
+	return appData;
+};
+
 class ElectronStore extends Conf {
 	constructor(options) {
-		const app = (electron.app || electron.remote.app);
-		const defaultCwd = app.getPath('userData');
+		let defaultCwd;
+		let appVersion;
+
+		// If we are in the renderer process, we communicate with the main process
+		// to get the required data for the module otherwise, we pull from the main process.
+		if (ipcRenderer) {
+			({defaultCwd, appVersion} = ipcRenderer.sendSync('electron-store-get-data'));
+		} else if (ipcMain && app) {
+			({defaultCwd, appVersion} = initDataListener());
+		}
 
 		options = {
 			name: 'config',
@@ -14,7 +42,7 @@ class ElectronStore extends Conf {
 		};
 
 		if (!options.projectVersion) {
-			options.projectVersion = app.getVersion();
+			options.projectVersion = appVersion;
 		}
 
 		if (options.cwd) {
@@ -25,7 +53,12 @@ class ElectronStore extends Conf {
 
 		options.configName = options.name;
 		delete options.name;
+
 		super(options);
+	}
+
+	static initRenderer() {
+		initDataListener();
 	}
 
 	openInEditor() {
