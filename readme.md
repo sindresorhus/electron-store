@@ -6,6 +6,30 @@ Electron doesn't have a built-in way to persist user preferences and other data.
 
 You can use this module directly in both the main and renderer process. For use in the renderer process only, you need to call `Store.initRenderer()` in the main process, or create a new Store instance (`new Store()`) in the main process.
 
+<br>
+
+---
+
+<div align="center">
+	<p>
+		<p>
+			<sup>
+				<a href="https://github.com/sponsors/sindresorhus">My open source work is supported by the community</a>
+			</sup>
+		</p>
+		<sup>Special thanks to:</sup>
+		<br>
+		<br>
+		<a href="https://standardresume.co/tech">
+			<img src="https://sindresorhus.com/assets/thanks/standard-resume-logo.svg" width="200"/>
+		</a>
+	</p>
+</div>
+
+---
+
+<br>
+
 ## Install
 
 ```
