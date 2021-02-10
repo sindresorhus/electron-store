@@ -29,7 +29,13 @@ class ElectronStore extends Conf {
 		// If we are in the renderer process, we communicate with the main process
 		// to get the required data for the module otherwise, we pull from the main process.
 		if (ipcRenderer) {
-			({defaultCwd, appVersion} = ipcRenderer.sendSync('electron-store-get-data'));
+			const appData = ipcRenderer.sendSync('electron-store-get-data');
+
+			if (!appData) {
+				throw new Error('Electron Store: You need to call `.initRenderer()` from the main process.');
+			}
+
+			({defaultCwd, appVersion} = appData);
 		} else if (ipcMain && app) {
 			({defaultCwd, appVersion} = initDataListener());
 		}
