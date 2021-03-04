@@ -1,5 +1,6 @@
 'use strict';
 const path = require('path');
+const {serialize, deserialize} = require('v8');
 const {app, ipcMain, ipcRenderer, shell} = require('electron');
 const Conf = require('conf');
 
@@ -42,6 +43,8 @@ class ElectronStore extends Conf {
 
 		options = {
 			name: 'config',
+			serialize: value => serialize(value).toString('base64'),
+			deserialize: value => deserialize(Buffer.from(value, 'base64')),
 			...options
 		};
 

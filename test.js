@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import electron from 'electron';
+import {deserialize} from 'v8';
 import test from 'ava';
 import execa from 'execa';
 
@@ -20,13 +21,16 @@ const run = async file => {
 
 test('main', async t => {
 	const storagePath = await run('fixture.js');
-	t.deepEqual(JSON.parse(fs.readFileSync(storagePath, 'utf8')), {ava: '🚀'});
+	const data = deserialize(Buffer.from(fs.readFileSync(storagePath, 'utf8'), 'base64'));
+	t.deepEqual(Object.keys(data), ['date', 'ava']);
+	t.is(data.ava, '🚀');
+	t.true(data.date instanceof Date);
 	fs.unlinkSync(storagePath);
 });
 
 test('cwd option', async t => {
 	const result = await run('fixture-cwd.js');
-	const [defaultPath, storagePath, storagePath2] = result.split('\n');
+	const [defaultPath, storagePath, storagePath2] = result.split(/\r?\n/);
 	t.is(storagePath, path.join(defaultPath, 'foo/config.json'));
 	t.is(storagePath2, path.join(__dirname, 'bar/config.json'));
 	fs.unlinkSync(storagePath);

@@ -57,6 +57,11 @@ console.log(store.get('foo'));
 store.delete('unicorn');
 console.log(store.get('unicorn'));
 //=> undefined
+
+// Store non-primitive values
+store.set('date', new Date());
+console.log(store.get('date') instanceof Date);
+//=> true
 ```
 
 ## API

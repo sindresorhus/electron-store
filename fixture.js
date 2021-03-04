@@ -26,6 +26,9 @@ assert.strictEqual(store.get('unicorn'), '🦄');
 store.delete('unicorn');
 assert.strictEqual(store.get('unicorn'), undefined);
 
+store.set('date', new Date());
+assert(store.get('date') instanceof Date);
+
 storeWithSchema.set('foo', 77);
 assert.strictEqual(storeWithSchema.get('foo'), 77);
 
