@@ -2,6 +2,7 @@
 const path = require('path');
 const {app, ipcMain, ipcRenderer, shell} = require('electron');
 const Conf = require('conf');
+const flags = {initalised: false};
 
 // Set up the `ipcMain` handler for communication between renderer and main process.
 const initDataListener = () => {
@@ -14,9 +15,12 @@ const initDataListener = () => {
 		appVersion: app.getVersion()
 	};
 
-	ipcMain.on('electron-store-get-data', event => {
-		event.returnValue = appData;
-	});
+	if (!flags.initialised) {
+		ipcMain.on('electron-store-get-data', event => {
+			event.returnValue = appData;
+		});
+		flags.initialised = true;
+	}
 
 	return appData;
 };
