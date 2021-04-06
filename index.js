@@ -18,7 +18,7 @@ const initDataListener = () => {
 	if (isInitialised) {
 		return appData;
 	}
-	
+
 	ipcMain.on('electron-store-get-data', event => {
 		event.returnValue = appData;
 	});
