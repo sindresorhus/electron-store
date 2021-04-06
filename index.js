@@ -15,8 +15,10 @@ const initDataListener = () => {
 		appVersion: app.getVersion()
 	};
 
-	if (isInitialised) return appData;
-
+	if (isInitialised) {
+		return appData;
+	}
+	
 	ipcMain.on('electron-store-get-data', event => {
 		event.returnValue = appData;
 	});
