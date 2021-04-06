@@ -14,13 +14,13 @@ const initDataListener = () => {
 		defaultCwd: app.getPath('userData'),
 		appVersion: app.getVersion()
 	};
-	
+
 	if (isInitialised) return appData;
 
 	ipcMain.on('electron-store-get-data', event => {
 		event.returnValue = appData;
 	});
-	
+
 	isInitialised = true;
 
 	return appData;
