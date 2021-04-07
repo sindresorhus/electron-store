@@ -16,7 +16,7 @@ const initDataListener = () => {
 		appVersion: app.getVersion()
 	};
 
-	if (isInitialised) {
+	if (isInitialized) {
 		return appData;
 	}
 
@@ -24,7 +24,7 @@ const initDataListener = () => {
 		event.returnValue = appData;
 	});
 
-	isInitialised = true;
+	isInitialized = true;
 
 	return appData;
 };
