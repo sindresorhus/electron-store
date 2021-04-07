@@ -2,7 +2,8 @@
 const path = require('path');
 const {app, ipcMain, ipcRenderer, shell} = require('electron');
 const Conf = require('conf');
-let isInitialised = false;
+
+let isInitialized = false;
 
 // Set up the `ipcMain` handler for communication between renderer and main process.
 const initDataListener = () => {
