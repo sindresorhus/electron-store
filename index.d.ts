@@ -1,4 +1,3 @@
-/// <reference types="node"/>
 import {Except} from 'type-fest';
 import Conf, {Schema as ConfSchema, Options as ConfOptions} from 'conf';
 
