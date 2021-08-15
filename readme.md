@@ -173,11 +173,9 @@ If a relative path, it's relative to the default cwd. For example, `{cwd: 'unico
 Type: `string | Buffer | TypedArray | DataView`\
 Default: `undefined`
 
-This can be used to secure sensitive data **if** the encryption key is stored in a secure manner (not plain-text) in the Node.js app. For example, by using [`node-keytar`](https://github.com/atom/node-keytar) to store the encryption key securely, or asking the encryption key from the user (a password) and then storing it in a variable.
+Note that this is **not intended for security purposes**, since the encryption key would be easily found inside a plain-text Node.js app.
 
-In addition to security, this could be used for obscurity. If a user looks through the config directory and finds the config file, since it's just a JSON file, they may be tempted to modify it. By providing an encryption key, the file will be obfuscated, which should hopefully deter any users from doing so.
-
-It also has the added bonus of ensuring the config file's integrity. If the file is changed in any way, the decryption will not work, in which case the store will just reset back to its default state.
+Its main use is for obscurity. If a user looks through the config directory and finds the config file, since it's just a JSON file, they may be tempted to modify it. By providing an encryption key, the file will be obfuscated, which should hopefully deter any users from doing so.
 
 When specified, the store will be encrypted using the [`aes-256-cbc`](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) encryption algorithm.
 
