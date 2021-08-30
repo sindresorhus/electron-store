@@ -24,6 +24,14 @@ You can use this module directly in both the main and renderer process. For use 
 			<img src="https://sindresorhus.com/assets/thanks/standard-resume-logo.svg" width="200"/>
 		</a>
 	</p>
+	<br>
+	<a href="https://keygen.sh">
+		<div>
+			<img src="https://sindresorhus.com/assets/thanks/keygen-logo.svg" width="210" alt="Keygen">
+		</div>
+		<b>A dead-simple software licensing and distribution API built for developers</b>
+	</a>
+	<br>
 </div>
 
 ---
