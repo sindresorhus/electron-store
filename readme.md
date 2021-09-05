@@ -422,6 +422,12 @@ ipcMain.handle('getStoreValue', (event, key) => {
 const foo = await ipcRenderer.invoke('getStoreValue', 'foo');
 ```
 
+#### Can I use it for large amounts of data?
+
+This package is not a database. It simply uses a JSON file that is read/written on every change. Prefer using it for smaller amounts of data like user settings, value caching, state, etc.
+
+If you need to store large blobs of data, I recommend saving it to disk and to use this package to store the path to the file instead.
+
 ## Related
 
 - [electron-util](https://github.com/sindresorhus/electron-util) - Useful utilities for developing Electron apps and modules
