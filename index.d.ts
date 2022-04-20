@@ -4,7 +4,7 @@ import Conf, {Schema as ConfSchema, Options as ConfOptions} from 'conf';
 declare namespace ElectronStore {
 	type Schema<T> = ConfSchema<T>;
 
-	type Options<T> = Except<ConfOptions<T>, 'configName' | 'projectName' | 'projectVersion' | 'projectSuffix'> & {
+	type Options<T extends Record<string, any>> = Except<ConfOptions<T>, 'configName' | 'projectName' | 'projectVersion' | 'projectSuffix'> & {
 		/**
 		Name of the storage file (without extension).
 
