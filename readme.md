@@ -134,6 +134,8 @@ You can use migrations to perform operations to the store whenever a version is 
 
 The `migrations` object should consist of a key-value pair of `'version': handler`. The `version` can also be a [semver range](https://github.com/npm/node-semver#ranges).
 
+> Note: The version the migrations use refers to the project version by default. If you want to change this behavior, specify the [`projectVersion`](#projectVersion) option.
+
 Example:
 
 ```js
@@ -153,6 +155,34 @@ const store = new Store({
 		},
 		'>=2.0.0': store => {
 			store.set('phase', '>=2.0.0');
+		}
+	}
+});
+```
+
+#### projectVersion
+
+Type: `string`\
+Default: `app.getVersion()`
+
+In development `app.getVersion()` return value [depends on how app launched](https://github.com/electron/electron/issues/7085#issuecomment-244584704)\
+	- `electron path/to/app/package_json_dir` returns version from `package.json`\
+	- `electron path/to/main.js` returns `Electron` package version that breaks migrations in development
+
+To fix up `migrations` in development mode you can provide `projectVersion`
+
+Example:
+
+```ts
+import { app } from "electron";
+
+const APP_VERSION = NODE_ENV === "development" ? process.env.npm_package_version : app.getVersion();
+
+const store = new Store({
+	projectVersion: APP_VERSION,
+	migrations: {
+		'0.0.1': store => {
+			store.set('debugPhase', true);
 		}
 	}
 });
