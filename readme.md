@@ -158,6 +158,52 @@ const store = new Store({
 });
 ```
 
+### beforeEachMigration
+
+Type: `Function`\
+Default: `undefined`
+
+The given callback function will be called before each migration step.
+
+The function receives the store as the first argument and a context object as the second argument with the following properties:
+
+- `fromVersion` - The version the migration step is being migrated from.
+- `toVersion` - The version the migration step is being migrated to.
+- `finalVersion` - The final version after all the migrations are applied.
+- `versions` - All the versions with a migration step.
+
+This can be useful for logging purposes, preparing migration data, etc.
+
+Example:
+
+```js
+const Store = require('electron-store');
+
+console.log = someLogger.log;
+
+const mainConfig = new Store({
+	beforeEachMigration: (store, context) => {
+		console.log(`[main-config] migrate from ${context.fromVersion} → ${context.toVersion}`);
+	},
+	migrations: {
+		'0.4.0': store => {
+			store.set('debugPhase', true);
+		}
+	}
+});
+
+const secondConfig = new Store({
+	beforeEachMigration: (store, context) => {
+		console.log(`[second-config] migrate from ${context.fromVersion} → ${context.toVersion}`);
+	},
+	migrations: {
+		'1.0.1': store => {
+			store.set('debugPhase', true);
+		}
+	}
+});
+```
+
 #### name
 
 Type: `string`\

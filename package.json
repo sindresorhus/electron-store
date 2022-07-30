@@ -34,8 +34,8 @@
 		"save"
 	],
 	"dependencies": {
-		"conf": "^10.1.2",
-		"type-fest": "^2.12.2"
+		"conf": "^10.2.0",
+		"type-fest": "^2.17.0"
 	},
 	"devDependencies": {
 		"ava": "^2.4.0",
