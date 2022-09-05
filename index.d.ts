@@ -17,7 +17,7 @@ declare namespace ElectronStore {
 }
 
 /**
-Simple data persistence for your [Electron](https://electronjs.org) app or module - Save and load user preferences, app state, cache, etc.
+Simple data persistence for your [Electron](https://electronjs.org) app or module - Save and load user settings, app state, cache, etc.
 */
 declare class ElectronStore<T extends Record<string, any> = Record<string, unknown>> extends Conf<T> {
 	/**
