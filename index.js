@@ -74,7 +74,7 @@ class ElectronStore extends Conf {
 	}
 
 	openInEditor() {
-		shell.openPath(this.path);
+		return shell.openPath(this.path);
 	}
 }
 
