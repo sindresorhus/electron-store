@@ -379,7 +379,7 @@ Get the path to the storage file.
 
 Open the storage file in the user's editor.
 
-See [`electron.shell.openPath(path)`](https://www.electronjs.org/docs/latest/api/shell#shellopenpathpath) for handling return value.
+Will throw if the file failed to open.
 
 ### initRenderer()
 

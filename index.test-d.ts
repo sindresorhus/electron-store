@@ -18,7 +18,7 @@ store.reset('foo');
 store.has('foo');
 store.clear();
 
-store.openInEditor();
+await store.openInEditor();
 
 store.size; // eslint-disable-line @typescript-eslint/no-unused-expressions
 store.store; // eslint-disable-line @typescript-eslint/no-unused-expressions

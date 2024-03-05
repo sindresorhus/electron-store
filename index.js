@@ -73,8 +73,12 @@ class ElectronStore extends Conf {
 		initDataListener();
 	}
 
-	openInEditor() {
-		return shell.openPath(this.path);
+	async openInEditor() {
+		const error = await shell.openPath(this.path);
+
+		if (error) {
+			throw new Error(error);
+		}
 	}
 }
 
