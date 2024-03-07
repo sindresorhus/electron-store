@@ -60,7 +60,7 @@ declare class ElectronStore<T extends Record<string, any> = Record<string, unkno
 	/**
 	Open the storage file in the user's editor.
 	*/
-	openInEditor(): Promise<string>;
+	openInEditor(): Promise<void>;
 }
 
 export = ElectronStore;
