@@ -379,7 +379,7 @@ Get the path to the storage file.
 
 Open the storage file in the user's editor.
 
-Will throw if the file failed to open.
+Returns a promise that resolves when the editor has been opened, and rejects if it failed to open.
 
 ### initRenderer()
 
