@@ -379,6 +379,8 @@ Get the path to the storage file.
 
 Open the storage file in the user's editor.
 
+Returns a promise that resolves when the editor has been opened, or rejects if it failed to open.
+
 ### initRenderer()
 
 Initializer to set up the required `ipc` communication channels for the module when a `Store` instance is not created in the main process and you are creating a `Store` instance in the Electron renderer process only.
