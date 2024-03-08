@@ -10,6 +10,7 @@
 		"email": "sindresorhus@gmail.com",
 		"url": "https://sindresorhus.com"
 	},
+	"sideEffects": false,
 	"scripts": {
 		"test": "xo && ava && tsd"
 	},
