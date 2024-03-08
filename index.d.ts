@@ -59,6 +59,8 @@ declare class ElectronStore<T extends Record<string, any> = Record<string, unkno
 
 	/**
 	Open the storage file in the user's editor.
+
+ 	Returns a promise that resolves when the editor has been opened, or rejects if it failed to open.
 	*/
 	openInEditor(): Promise<void>;
 }
