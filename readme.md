@@ -375,11 +375,11 @@ store.store = {
 
 Get the path to the storage file.
 
-#### async .openInEditor()
+#### .openInEditor()
 
 Open the storage file in the user's editor.
 
-Returns a promise that resolves when the editor has been opened, and rejects if it failed to open.
+Returns a promise that resolves when the editor has been opened, or rejects if it failed to open.
 
 ### initRenderer()
 
