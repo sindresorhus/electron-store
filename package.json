@@ -10,7 +10,15 @@
 		"email": "sindresorhus@gmail.com",
 		"url": "https://sindresorhus.com"
 	},
+	"type": "module",
+	"exports": {
+		"types": "./index.d.ts",
+		"default": "./index.js"
+	},
 	"sideEffects": false,
+	"engines": {
+		"node": ">=20"
+	},
 	"scripts": {
 		"test": "xo && ava && tsd"
 	},
@@ -35,20 +43,27 @@
 		"save"
 	],
 	"dependencies": {
-		"conf": "^10.2.0",
-		"type-fest": "^2.17.0"
+		"conf": "^12.0.0",
+		"type-fest": "^4.18.1"
 	},
 	"devDependencies": {
-		"ava": "^2.4.0",
-		"electron": "^12.0.4",
-		"execa": "^5.0.0",
-		"tsd": "^0.14.0",
-		"xo": "^0.38.2"
+		"ava": "^6.1.2",
+		"electron": "^30.0.1",
+		"execa": "^8.0.1",
+		"tsd": "^0.31.0",
+		"xo": "^0.58.0"
 	},
 	"xo": {
 		"envs": [
 			"node",
 			"browser"
 		]
+	},
+	"tsd": {
+		"compilerOptions": {
+			"module": "node16",
+			"moduleResolution": "node16",
+			"moduleDetection": "force"
+		}
 	}
 }
