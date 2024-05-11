@@ -1,7 +1,7 @@
 import {type Except} from 'type-fest';
-import Conf, {type Options as ConfigOptions} from 'conf';
+import Conf, {type Options as ConfigOptions} from 'conf/dist/source/index';
 
-export {Schema} from 'conf';
+export {Schema} from 'conf/dist/source/index';
 
 export type Options<T extends Record<string, any>> = Except<ConfigOptions<T>, 'configName' | 'projectName' | 'projectVersion' | 'projectSuffix'> & {
 	/**
