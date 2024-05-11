@@ -58,12 +58,5 @@
 			"node",
 			"browser"
 		]
-	},
-	"tsd": {
-		"compilerOptions": {
-			"module": "node16",
-			"moduleResolution": "node16",
-			"moduleDetection": "force"
-		}
 	}
 }
