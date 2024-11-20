@@ -1,11 +1,10 @@
 import process from 'node:process';
 import path from 'node:path';
-import {
+import electron, {
 	app,
 	ipcMain,
 	shell,
-} from 'electron'; // eslint-disable-line import/no-duplicates
-import electron from 'electron'; // eslint-disable-line import/no-duplicates
+} from 'electron';
 import Conf from 'conf';
 
 let isInitialized = false;
