@@ -43,21 +43,24 @@
 		"save"
 	],
 	"dependencies": {
-		"conf": "^14.0.0",
-		"type-fest": "^4.41.0"
+		"conf": "^15.0.0",
+		"type-fest": "^5.0.1"
 	},
 	"devDependencies": {
-		"ava": "^6.4.0",
-		"electron": "^31.0.1",
+		"ava": "^6.4.1",
+		"electron": "^38.1.2",
 		"execa": "^9.6.0",
-		"tsd": "^0.32.0",
-		"xo": "^0.58.0"
+		"tsd": "^0.33.0",
+		"xo": "^0.60.0"
 	},
 	"xo": {
 		"envs": [
 			"node",
 			"browser"
-		]
+		],
+		"rules": {
+			"n/no-unsupported-features/node-builtins": "off"
+		}
 	},
 	"tsd": {
 		"compilerOptions": {

@@ -318,6 +318,26 @@ Check if an item exists.
 
 Delete an item.
 
+#### .appendToArray(key, value)
+
+Append an item to an array.
+
+If the key doesn't exist, it will be created as an array. If the key exists and is not an array, a `TypeError` will be thrown.
+
+The `value` must be JSON serializable. Trying to set the type like `undefined`, `function`, or `symbol` will result in a `TypeError`.
+
+```js
+store.set('items', [{name: 'foo'}]);
+store.appendToArray('items', {name: 'bar'});
+console.log(store.get('items'));
+//=> [{name: 'foo'}, {name: 'bar'}]
+
+// Creates array if key doesn't exist
+store.appendToArray('newItems', 'first');
+console.log(store.get('newItems'));
+//=> ['first']
+```
+
 #### .clear()
 
 Delete all items.
