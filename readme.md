@@ -38,6 +38,38 @@ console.log(store.get('unicorn'));
 //=> undefined
 ```
 
+### In case of you get error "Store is not a constructor", you can await import, initialize and then use
+
+```ts
+import type ElectronStore from 'electron-store'
+
+let store: ElectronStore<Record<string, unknown>> | null = null
+
+async function initStore(): Promise<void> {
+  const { default: Store } = await import('electron-store')
+  store = new Store()
+  console.log('store-in', store.store)
+}
+
+...
+
+app.whenReady().then(async () => {
+  await initStore()
+  store.set('unicorn', '🦄');
+  console.log(store.get('unicorn'));
+  //=> '🦄'
+
+  // Use dot-notation to access nested properties
+  store.set('foo.bar', true);
+  console.log(store.get('foo'));
+  //=> {bar: true}
+
+  store.delete('unicorn');
+  console.log(store.get('unicorn'));
+  //=> undefined
+})
+```
+
 ## API
 
 Changes are written to disk atomically, so if the process crashes during a write, it will not corrupt the existing config.
