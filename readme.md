@@ -4,6 +4,9 @@
 
 Electron doesn't have a built-in way to persist user settings and other data. This module handles that for you, so you can focus on building your app. The data is saved in a JSON file named config.json in [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname).
 
+> [!NOTE]
+> This is not a database. The entire JSON file is read and written on every change, so it's best suited for small data like user settings. For large data, use SQLite or similar.
+
 You can use this module directly in both the main and renderer process. For use in the renderer process only, you need to call `Store.initRenderer()` in the main process, or create a new Store instance (`new Store()`) in the main process.
 
 ## Install
@@ -480,9 +483,9 @@ const foo = await ipcRenderer.invoke('getStoreValue', 'foo');
 
 #### Can I use it for large amounts of data?
 
-This package is not a database. It simply uses a JSON file that is read/written on every change. Prefer using it for smaller amounts of data like user settings, value caching, state, etc.
+No. This package reads and writes the entire JSON file on every change. It will get slow with even moderately large data (e.g., 1 MB+). Use it only for small amounts of data like user settings, value caching, state, etc.
 
-If you need to store large blobs of data, I recommend saving it to disk and to use this package to store the path to the file instead.
+For large data, use SQLite or save files to disk and store the path here instead.
 
 ## Related
 
