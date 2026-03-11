@@ -487,6 +487,10 @@ No. This package reads and writes the entire JSON file on every change. It will 
 
 For large data, use SQLite or save files to disk and store the path here instead.
 
+#### Is the config file secure?
+
+Config files are stored in [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname), which is inside the user's home directory. The home directory is typically private to the user on all platforms.
+
 ## Related
 
 - [electron-util](https://github.com/sindresorhus/electron-util) - Useful utilities for developing Electron apps and modules
