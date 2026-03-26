@@ -32,3 +32,12 @@ test('cwd option', async t => {
 	fs.unlinkSync(storagePath);
 	fs.unlinkSync(storagePath2);
 });
+
+test('renderer process', async t => {
+	const result = await run('fixture-renderer-success.js');
+	const [defaultPath, storagePath, value] = result.split('\n').slice(-3);
+	t.is(value, '🚀');
+	t.is(storagePath, path.join(defaultPath, 'renderer/config.json'));
+	t.deepEqual(JSON.parse(fs.readFileSync(storagePath, 'utf8')), {ava: '🚀'});
+	fs.unlinkSync(storagePath);
+});
