@@ -39,6 +39,10 @@ console.log(store.get('foo'));
 store.delete('unicorn');
 console.log(store.get('unicorn'));
 //=> undefined
+
+store.set('lastOpened', new Date('2026-05-11T12:34:56.789Z'));
+console.log(store.get('lastOpened') instanceof Date);
+//=> true
 ```
 
 ## API

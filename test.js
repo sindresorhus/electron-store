@@ -32,3 +32,8 @@ test('cwd option', async t => {
 	fs.unlinkSync(storagePath);
 	fs.unlinkSync(storagePath2);
 });
+
+test('Date values roundtrip', async t => {
+	const storagePath = await run('fixture-date.js');
+	t.false(fs.existsSync(storagePath));
+});
