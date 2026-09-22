@@ -16,7 +16,7 @@
 		"node": ">=22"
 	},
 	"scripts": {
-		"test": "xo && ava && tsd"
+		"test": "xo && node --test"
 	},
 	"files": [
 		"index.js",
@@ -43,22 +43,13 @@
 		"type-fest": "^5.10.0"
 	},
 	"devDependencies": {
-		"ava": "^8.0.1",
-		"electron": "^44.4.3",
+		"electron": "^44.4.5",
 		"execa": "^10.0.1",
-		"tsd": "^0.33.0",
 		"xo": "^5.0.1"
 	},
 	"xo": {
 		"rules": {
 			"n/no-unsupported-features/node-builtins": "off"
-		}
-	},
-	"tsd": {
-		"compilerOptions": {
-			"module": "node16",
-			"moduleResolution": "node16",
-			"moduleDetection": "force"
 		}
 	}
 }

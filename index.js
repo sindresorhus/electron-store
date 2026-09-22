@@ -52,8 +52,8 @@ export default class ElectronStore extends Conf {
 			({defaultCwd, appVersion} = appData);
 		} else if (ipcMain && app) {
 			({defaultCwd, appVersion} = initDataListener());
-		} else if (!options?.cwd) {
-			// Without Electron's app data there is no default cwd to fall back on, so `conf` would fail further down with a confusing `projectName` error.
+		} else if (!options?.cwd || !path.isAbsolute(options.cwd)) {
+			// Without Electron's app data there is no default cwd to fall back on and no cwd to resolve a relative one against, so `conf` would fail further down with a confusing `projectName` error.
 			throw new Error('Electron Store: You can only use this module from the Electron main process or the renderer process, unless you pass an absolute `cwd`.');
 		}
 

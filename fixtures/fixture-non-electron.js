@@ -1,3 +1,3 @@
-import Store from './index.js';
+import Store from '../index.js';
 
 new Store(); // eslint-disable-line no-new

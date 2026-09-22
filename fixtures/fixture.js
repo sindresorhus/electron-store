@@ -1,7 +1,7 @@
 import process from 'node:process';
 import assert from 'node:assert';
 import electron from 'electron';
-import Store from './index.js';
+import Store from '../index.js';
 
 // Prevent Electron from never exiting when an exception happens
 process.on('uncaughtException', error => {
@@ -52,7 +52,7 @@ const storeWithNestedSchema = new Store({
 storeWithNestedSchema.clear();
 assert.strictEqual(storeWithNestedSchema.get('bar.a'), 5);
 
-// To be checked in AVA
+// To be checked in the test suite
 store.set('ava', '🚀');
 
 console.log(store.path);

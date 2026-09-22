@@ -98,7 +98,7 @@ console.log(store.get('foo'));
 //=> 50
 
 store.set('foo', '1');
-// [Error: Config schema violation: `foo` should be number]
+// [Error: Config schema violation: `foo` must be number]
 ```
 
 **Note:** The `default` value will be overwritten by the `defaults` option if set.
