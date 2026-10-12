@@ -7,6 +7,8 @@ export type Options<T extends Record<string, any>> = Except<ConfigOptions<T>, 'c
 	/**
 	Name of the storage file (without extension).
 
+	It may include a subdirectory of `cwd`, such as `sub/config`, but it must not point outside `cwd`.
+
 	This is useful if you want multiple storage files for your app. Or if you're making a reusable Electron module that persists some data, in which case you should **not** use the name `config`.
 
 	@default 'config'

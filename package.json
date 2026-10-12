@@ -39,12 +39,12 @@
 		"save"
 	],
 	"dependencies": {
-		"conf": "^15.1.0",
+		"conf": "^16.0.0",
 		"type-fest": "^5.10.0"
 	},
 	"devDependencies": {
-		"electron": "^44.4.5",
-		"execa": "^10.0.1",
+		"electron": "^44.7.0",
+		"execa": "^10.1.0",
 		"xo": "^5.0.1"
 	},
 	"xo": {

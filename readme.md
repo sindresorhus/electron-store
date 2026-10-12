@@ -5,7 +5,7 @@
 Electron doesn't have a built-in way to persist user settings and other data. This module handles that for you, so you can focus on building your app. The data is saved in a JSON file named config.json in [`app.getPath('userData')`](https://electronjs.org/docs/api/app#appgetpathname).
 
 > [!NOTE]
-> This is not a database. The entire JSON file is read and written on every change, so it's best suited for small data like user settings. For large data, use SQLite or similar.
+> This is not a database. The entire JSON file is read and written on every change, so it's best suited for small data like user settings that change occasionally. For large data, or for a high rate of changes, use SQLite or similar.
 
 You can use this module directly in both the main and renderer process. For use in the renderer process only, you need to call `Store.initRenderer()` in the main process, or create a new Store instance (`new Store()`) in the main process.
 
@@ -18,7 +18,7 @@ You can use this module directly in both the main and renderer process. For use 
 npm install electron-store
 ```
 
-*Requires Electron 30 or later.*
+*Requires Electron 35 or later.*
 
 > [!NOTE]
 > This package is native [ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) and no longer provides a CommonJS export. If your project uses CommonJS, you will have to [convert to ESM](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c). More info about [Electron and ESM](https://www.electronjs.org/docs/latest/tutorial/esm). Please don't open issues for questions regarding CommonJS and ESM.
@@ -48,6 +48,8 @@ console.log(store.get('unicorn'));
 
 Changes are written to disk atomically, so if the process crashes during a write, it will not corrupt the existing config.
 
+**Two processes writing to the same storage file at the same moment is not supported.** A write reads the storage file first, so a change made by another process is not lost unless the two writes overlap. A whole-store write (`store.store = …`) replaces everything the file holds.
+
 ### Store(options?)
 
 Returns a new instance.
@@ -64,6 +66,12 @@ Default values for the store items.
 
 **Note:** The values in `defaults` will overwrite the `default` key in the `schema` option.
 
+**Note:** The values are copied when the store is created, so changing the object you passed afterwards has no effect. A value with a `toJSON` method, such as a `Date`, is stored as what it serializes to.
+
+**Note:** A key covered by `defaults` cannot be deleted, since the default is written back. With dot notation, a key below it can be deleted, and `.reset()` puts it back.
+
+**Note:** A value must be JSON serializable, like for [`.set()`](#setkey-value). A key set to `undefined` is ignored.
+
 #### schema
 
 type: `object`
@@ -71,6 +79,8 @@ type: `object`
 [JSON Schema](https://json-schema.org) to validate your config data.
 
 Under the hood, the JSON Schema validator [ajv](https://ajv.js.org/json-schema.html) is used to validate your config. We use [JSON Schema draft-2020-12](https://json-schema.org/draft/2020-12/release-notes) and support all validation keywords and formats.
+
+**Note:** The ajv dependency may cause CSP violations. See [Can I use `conf` with strict Content Security Policy (CSP)?](https://github.com/sindresorhus/conf#can-i-use-conf-with-strict-content-security-policy-csp).
 
 You should define your schema as an object where each key is the name of your data's property and each value is a JSON schema used to validate that property. See more [here](https://json-schema.org/understanding-json-schema/reference/object.html#properties).
 
@@ -129,11 +139,38 @@ Without `default: {}` on `bar`, the store has no `bar` object to apply `a` to, s
 
 This applies at each level, so a property nested two objects deep needs a `default` of `{}` on both objects in the chain.
 
+**Note:** A `default` must be JSON serializable, like a [`.set()`](#setkey-value) value. With [dot notation](#accesspropertiesbydotnotation), a `schema` key must be a plain property name, so describe nested keys with `properties`. A name inside `properties` can contain a dot, such as `example.com`. Escape the dot to read or write it, such as `sites.example\.com` (in JavaScript, `'sites.example\\.com'`).
+
+To have `get()` return the right types, annotate the schema with `Schema<T>`:
+
+```ts
+import Store, {type Schema} from 'electron-store';
+
+type StoreType = {
+	isEnabled: boolean;
+	interval: number;
+};
+
+const schema: Schema<StoreType> = {
+	isEnabled: {type: 'boolean'},
+	interval: {type: 'number'}
+};
+
+const store = new Store({schema});
+
+console.log(store.get('isEnabled'));
+//=> typed as boolean
+```
+
+Without the annotation, TypeScript cannot tell the value types from the schema, so `get()` returns `unknown`. If you also pass `defaults`, the schema still wins the inference, so a key that is only in `defaults` is an error.
+
 #### rootSchema
 
 Type: `object`
 
 [JSON Schema](https://json-schema.org) for the root object of the config. The `schema` option defines the `properties` of that object, so this is where you put everything that applies to the config object as a whole.
+
+The `properties` keyword comes from the `schema` option. Do not put `properties` in `rootSchema`, as it will throw.
 
 For example, to reject properties that are not in `schema`:
 
@@ -152,8 +189,6 @@ const store = new Store({
 store.set('bar', 1);
 // [Error: Config schema violation: `` must NOT have additional properties]
 ```
-
-`additionalProperties: false` does not work together with the `migrations` option, because the store keeps its migration bookkeeping in the config under a key that is not in `schema`.
 
 To require a property, add it to `required` and give it a `default` in `schema` as well. Otherwise a new config has no value for the property and the store throws when it is created.
 
@@ -191,7 +226,7 @@ Type: `object`
 
 You can use migrations to perform operations to the store whenever a version is upgraded.
 
-The `migrations` object should consist of a key-value pair of `'version': handler`. The `version` can also be a [semver range](https://github.com/npm/node-semver#ranges).
+The `migrations` object should consist of key-value pairs of `'version': handler`. The `version` can also be a [semver range](https://github.com/npm/node-semver#ranges). Migrations run in version order, whatever order they are defined in.
 
 Example:
 
@@ -217,12 +252,26 @@ const store = new Store({
 });
 ```
 
+A migration must not create another `Store` instance with `migrations` for the same storage file.
+
+A migration sees the keys the storage file holds and the values of the `defaults` option. The `default` values of the `schema` option are added after the migrations have run, since a migration may repair a value the schema rejects.
+
+The store keeps its migration bookkeeping in the storage file under a reserved `__internal__` key. It is not exposed through `.store`, `.get()`, `.has()` or iteration, and `.set()` and `.delete()` reject it. This is why `rootSchema` can use `additionalProperties: false` together with `migrations`.
+
+The recorded version never moves backwards, so running an older `projectVersion` than the store was migrated with does not run those migrations again.
+
+Migrations do not run for a storage file that does not exist yet. There is no old data to migrate, so the store starts at the current project version. A storage file that exists but has no recorded version is still migrated, which covers an app that shipped before it had migrations.
+
+If a migration throws, the changes it made are rolled back, and an error that includes its message is thrown. The migrations before it are kept.
+
 #### projectVersion
 
 Type: `string`\
 Default: [`app.getVersion()`](https://electronjs.org/docs/api/app#appgetversion)
 
 The version the `migrations` option compares against. It defaults to your app's version, so you only need to set this if you want the migrations to run against a different version, for example while developing.
+
+With `migrations`, it must be a full semantic version, such as `1.0.0`.
 
 #### beforeEachMigration
 
@@ -234,9 +283,9 @@ The given callback function will be called before each migration step.
 The function receives the store as the first argument and a context object as the second argument with the following properties:
 
 - `fromVersion` - The version the migration step is being migrated from.
-- `toVersion` - The version the migration step is being migrated to.
+- `toVersion` - The version the migration step is being migrated to. For a range, this is the version it runs at.
 - `finalVersion` - The final version after all the migrations are applied.
-- `versions` - All the versions with a migration step.
+- `versions` - The versions that will run in this migration pass.
 
 This can be useful for logging purposes, preparing migration data, etc.
 
@@ -247,7 +296,10 @@ import Store from 'electron-store';
 
 console.log = someLogger.log;
 
+// Migrations do not run for a storage file that does not exist yet, so these log for an app that has run before.
+
 const mainConfig = new Store({
+	projectVersion: '0.4.0',
 	beforeEachMigration: (store, context) => {
 		console.log(`[main-config] migrate from ${context.fromVersion} → ${context.toVersion}`);
 	},
@@ -259,6 +311,7 @@ const mainConfig = new Store({
 });
 
 const secondConfig = new Store({
+	projectVersion: '1.0.1',
 	beforeEachMigration: (store, context) => {
 		console.log(`[second-config] migrate from ${context.fromVersion} → ${context.toVersion}`);
 	},
@@ -277,6 +330,8 @@ Default: `'config'`
 
 Name of the storage file (without extension).
 
+It may include a subdirectory of `cwd`, such as `sub/config`, but it must not point outside `cwd`.
+
 This is useful if you want multiple storage files for your app. Or if you're making a reusable Electron module that persists some data, in which case you should **not** use the name `config`.
 
 #### cwd
@@ -290,16 +345,16 @@ If a relative path, it's relative to the default cwd. For example, `{cwd: 'unico
 
 #### encryptionKey
 
-Type: `string | Buffer | TypedArray | DataView`\
+Type: `string | Uint8Array | TypedArray | DataView`\
 Default: `undefined`
 
-Note that this is **not intended for security purposes**, since the encryption key would be easily found inside a plain-text Node.js app.
+Note that this is **not intended for security purposes**, since the encryption key would be easily found inside a plaintext Node.js app.
 
 Its main use is for obscurity. If a user looks through the config directory and finds the config file, since it's just a JSON file, they may be tempted to modify it. By providing an encryption key, the file will be obfuscated, which should hopefully deter any users from doing so.
 
 When using `aes-256-gcm`, the config file is authenticated. If the file is changed in any way, the decryption will fail. With `aes-256-cbc` and `aes-256-ctr`, tampering can go undetected.
 
-When specified, the store will be encrypted using the `encryptionAlgorithm` option (defaults to `aes-256-cbc`).
+When specified, the store will be encrypted using the `encryptionAlgorithm` option (defaults to `aes-256-cbc`). An empty string is refused.
 
 #### encryptionAlgorithm
 
@@ -326,9 +381,13 @@ You would usually not need this, but could be useful if you want to interact wit
 #### configFileMode
 
 Type: `number`\
-Default: `0o666`
+Default: `0o666`, reduced by the process umask
 
-The [mode](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation) used when creating the config file. It is modified by the [process umask](https://en.wikipedia.org/wiki/Umask), so with the typical umask of `0o022` the default results in `0o644`.
+The [mode](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation) used when creating the storage file.
+
+The mode is modified by the [process umask](https://en.wikipedia.org/wiki/Umask), whether it is the default or given by this option. With the typical umask of `0o022`, the default results in `0o644`. Storage files are also stored in a location that is typically protected already, so the default is usually fine.
+
+When this option is given, the mode is also applied to an existing storage file on every write. Otherwise, an existing storage file keeps its mode. A mode given by this option that, after the umask, leaves the file unreadable by its owner throws.
 
 You would usually not need this, but it could be useful if you use a custom `cwd`. Setting `0o600` makes the file readable only by the owner.
 
@@ -339,21 +398,23 @@ Setting restrictive permissions can cause problems if different users need to re
 Type: `boolean`\
 Default: `false`
 
-The config is cleared if reading the config file causes a `SyntaxError` (malformed JSON), a schema validation error when using the `schema` option, or a decryption failure when using `encryptionKey`. This is a good behavior for unimportant data, as the config file is not intended to be hand-edited, so it usually means the config is corrupt and there's nothing the user can do about it anyway. However, if you let the user edit the config file directly, mistakes might happen and it could be more useful to throw an error when the config is invalid instead of clearing.
+The config is cleared if reading the config file causes a `SyntaxError` (malformed JSON, also when thrown by your own [`deserialize`](#deserialize)), a schema validation error when using the `schema` option, or a decryption failure when using `encryptionKey`, and the cleared store is written over the file. This is a good behavior for unimportant data, as the config file is not intended to be hand-edited, so it usually means the config is corrupt and there's nothing the user can do about it anyway. However, if you let the user edit the config file directly, mistakes might happen and it could be more useful to throw an error when the config is invalid instead of clearing.
+
+A decryption failure includes a changed `encryptionKey` or `encryptionAlgorithm`, and a plaintext config file read with the `aes-256-gcm` or `aes-256-ctr` algorithm (for example, after adding encryption to an existing store). With your own `deserialize` and the `aes-256-cbc` or `aes-256-ctr` algorithm, a changed `encryptionKey` or `encryptionAlgorithm` is cleared only when your `deserialize` throws a `SyntaxError` for the data it cannot read, since those algorithms cannot tell a wrong key apart from damaged data. Any other error thrown by your own [`deserialize`](#deserialize) is thrown as is.
 
 #### serialize
 
 Type: `Function`\
 Default: `value => JSON.stringify(value, null, '\t')`
 
-Function to serialize the config object to a UTF-8 string when writing the config file.
+Function to serialize the config object to a UTF-8 string, or to a `Uint8Array`, when writing the config file.
 
 You would usually not need this, but it could be useful if you want to use a format other than JSON.
 
 #### deserialize
 
 Type: `Function`\
-Default: `JSON.parse`
+Default: `JSON.parse`, ignoring a leading byte order mark
 
 Function to deserialize the config object from a UTF-8 string when reading the config file.
 
@@ -364,7 +425,7 @@ You would usually not need this, but it could be useful if you want to use a for
 Type: `boolean`\
 Default: `true`
 
-Accessing nested properties by dot notation. For example:
+Access nested properties by dot notation. For example:
 
 ```js
 import Store from 'electron-store';
@@ -383,18 +444,22 @@ console.log(store.get('foo.bar.foobar'));
 //=> '🦄'
 ```
 
-Alternatively, you can set this option to `false` so the whole string would be treated as one key.
+Alternatively, you can set this option to `false` so the whole string is treated as one key.
 
 ```js
 const store = new Store({accessPropertiesByDotNotation: false});
 
 store.set({
-	`foo.bar.foobar`: '🦄'
+	'foo.bar.foobar': '🦄'
 });
 
 console.log(store.get('foo.bar.foobar'));
 //=> '🦄'
 ```
+
+With this option on, `__proto__`, `constructor` and `prototype` cannot be used in a key: [`.set()`](#setkey-value) ignores such a key, [`.get()`](#getkey-defaultvalue) returns the default value for it, and the `defaults` and `schema` options throw for it. Set this option to `false` to use them as keys.
+
+A key that is not a valid path, such as `a[x`, throws a `TypeError`.
 
 #### watch
 
@@ -403,9 +468,22 @@ Default: `false`
 
 Watch for any changes in the config file and call the callback for `onDidChange` or `onDidAnyChange` if set. This is useful if there are multiple processes changing the same config file, for example, if you want changes done in the main process to be reflected in a renderer process.
 
+If the storage file is a symlink, the file it points to when the store is created is watched.
+
+#### cache
+
+Type: `boolean`\
+Default: `false`
+
+Keep the store in memory, so reading a value does not read and parse the storage file each time. This makes reads much faster, in particular when the storage file is large.
+
+The cache is dropped on every write and whenever the [`watch`](#watch) option reports a change to the storage file. Writes read the storage file first, so changes made by another process are not lost, but reads only see them when `watch` is enabled or after a write.
+
+The objects returned by [`.store`](#store), `.get()` and iteration, and the values passed to the `onDidChange` and `onDidAnyChange` callbacks, are the cache itself, so the plain objects and arrays in them are frozen. Changing one throws a `TypeError`. Use [`.set()`](#setkey-value) and [`.delete()`](#deletekey) to write, and copy a value first if you want to change it, for example with [`structuredClone()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone).
+
 ### Instance
 
-You can use [dot-notation](https://github.com/sindresorhus/dot-prop) in a `key` to access nested properties.
+You can use [dot-notation](https://github.com/sindresorhus/dot-prop) in a `key` to access nested properties. A number addresses an element of an array. Setting an index past the end fills the gap with `null`, and `.delete()` removes the element, so the later elements move down.
 
 The instance is [`iterable`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols) so you can use it directly in a [`for…of`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/for...of) loop.
 
@@ -413,11 +491,13 @@ The instance is [`iterable`](https://developer.mozilla.org/en/docs/Web/JavaScrip
 
 Set an item.
 
-The `value` must be JSON serializable. Trying to set the type `undefined`, `function`, or `symbol` will result in a TypeError.
+The `value` must be JSON serializable. Trying to set a value of type `undefined`, `function`, or `symbol` will result in a `TypeError`, and so will a `bigint` unless you use a custom `serialize`.
 
 #### .set(object)
 
 Set multiple items at once.
+
+Each key replaces the whole value it names, so a nested object is not merged into the one the store holds. With dot notation, a key can be a path, such as `{'foo.bar': 1}`, which sets only that nested property.
 
 #### .get(key, defaultValue?)
 
@@ -425,7 +505,9 @@ Get an item or `defaultValue` if the item does not exist.
 
 #### .reset(...keys)
 
-Reset items to their default values, as defined by the `defaults` or `schema` option.
+Reset items to their default values, as defined by the `defaults` or `schema` option. The `default` values of the `schema` option are not used when `ajvOptions.useDefaults` is `false`.
+
+With dot notation, schema defaults below an optional object with no default of its own are unavailable to `reset()` when a parent default omits that object. Include the object in the parent default to reset its descendants individually.
 
 Use `.clear()` to reset all items.
 
@@ -443,7 +525,7 @@ Append an item to an array.
 
 If the key doesn't exist, it will be created as an array. If the key exists and is not an array, a `TypeError` will be thrown.
 
-The `value` must be JSON serializable. Trying to set the type like `undefined`, `function`, or `symbol` will result in a `TypeError`.
+The `value` must be JSON serializable. Trying to set a value of type `undefined`, `function`, or `symbol` will result in a `TypeError`, and so will a `bigint` unless you use a custom `serialize`.
 
 ```js
 store.set('items', [{name: 'foo'}]);
@@ -461,7 +543,7 @@ console.log(store.get('newItems'));
 
 Delete all items.
 
-This resets known items to their default values, if defined by the `defaults` or `schema` option.
+This resets known items to their default values, if defined by the `defaults` or `schema` option. The `default` values of the `schema` option are not used when `ajvOptions.useDefaults` is `false`.
 
 #### .onDidChange(key, callback)
 
@@ -469,9 +551,11 @@ This resets known items to their default values, if defined by the `defaults` or
 
 Watches the given `key`, calling `callback` on any changes.
 
-When a key is first set `oldValue` will be `undefined`, and when a key is deleted `newValue` will be `undefined`.
+A change noticed while the storage file cannot be read, for example while another process is writing it, is not reported.
 
-Returns a function which you can use to unsubscribe:
+When a key is first set, `oldValue` will be `undefined`, and when a key is deleted, `newValue` will be `undefined`.
+
+Returns a function that unsubscribes when called:
 
 ```js
 const unsubscribe = store.onDidChange(key, callback);
@@ -485,14 +569,26 @@ unsubscribe();
 
 Watches the whole config object, calling `callback` on any changes.
 
+A change noticed while the storage file cannot be read, for example while another process is writing it, is not reported.
+
 `oldValue` and `newValue` will be the config object before and after the change, respectively. You must compare `oldValue` to `newValue` to find out what changed.
 
-Returns a function which you can use to unsubscribe:
+Returns a function that unsubscribes when called:
 
 ```js
 const unsubscribe = store.onDidAnyChange(callback);
 
 unsubscribe();
+```
+
+#### .events
+
+An [`EventTarget`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) that dispatches a `change` event on every write of this instance, and when the [`watch`](#watch) option reports a change to the storage file. This is what `.onDidChange()` and `.onDidAnyChange()` listen on, and it is there if you want to listen directly:
+
+```js
+store.events.addEventListener('change', () => {
+	console.log('The store changed');
+});
 ```
 
 #### .size
@@ -512,6 +608,8 @@ store.store = {
 	hello: 'world'
 };
 ```
+
+Unlike [`.set()`](#setkey-value), a whole-store write drops a function or a symbol, like `JSON.stringify` does, instead of throwing. A `bigint` still throws, unless you use a custom `serialize`.
 
 #### .path
 
@@ -555,7 +653,7 @@ console.log(store.get('unicorn'));
 
 #### Can I use YAML or another serialization format?
 
-The `serialize` and `deserialize` options can be used to customize the format of the config file, as long as the representation is compatible with `utf8` encoding.
+The `serialize` and `deserialize` options can be used to customize the format of the config file, as long as the representation is compatible with UTF-8.
 
 Example using YAML:
 
